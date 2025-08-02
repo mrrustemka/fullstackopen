@@ -12,7 +12,6 @@ function App() {
   ]);
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
-  const [filter, setFilter] = useState('');
   const [filteredPersons, setFilteredPersons] = useState(persons);
 
   function onSubmit(event) {
@@ -40,11 +39,9 @@ function App() {
   }
 
   function handleFilterChange(event) {
-    const value = event.target.value;
-    setFilter(value);
     setFilteredPersons(
       persons.filter((person) =>
-        person.name.toLowerCase().includes(value.toLowerCase())
+        person.name.toLowerCase().includes(event.target.value.toLowerCase())
       )
     );
   }
@@ -52,7 +49,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter filter={filter} onFilterChange={handleFilterChange} />
+      <Filter onFilterChange={handleFilterChange} />
       <PersonForm
         onSubmit={onSubmit}
         name={newName}

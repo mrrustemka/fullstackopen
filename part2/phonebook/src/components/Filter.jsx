@@ -1,7 +1,7 @@
-﻿function Filter({ filter, onFilterChange }) {
+﻿function Filter({ onFilterChange }) {
   return (
     <>
-      Filter shown with <input value={filter} onChange={onFilterChange} />
+      Filter shown with <input onChange={onFilterChange} />
     </>
   );
 }
