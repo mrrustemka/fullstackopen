@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
-import Persons from './components/Persons';
-import axios from 'axios';
+import Person from './components/Person';
+import personsService from './services/persons';
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -11,8 +11,8 @@ function App() {
   const [filterText, setFilterText] = useState('');
 
   useEffect(() => {
-    axios.get('http://localhost:3001/persons').then((response) => {
-      setPersons(response.data);
+    personsService.getAll('http://localhost:3001/persons').then((response) => {
+      setPersons(response);
     });
   }, []);
 
@@ -29,14 +29,40 @@ function App() {
     };
 
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to phonebook`);
-      setNewName('');
-      return;
-    }
+      if (
+        window.confirm(
+          `${personObject?.name} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        const person = persons.find((p) => p.name === personObject.name);
+        const changedPerson = { ...person, phone: newPhone };
 
-    setPersons(persons.concat(personObject));
-    setNewName('');
-    setNewPhone('');
+        personsService
+          .update(person.id, changedPerson)
+          .then((returnedNote) => {
+            setPersons(
+              persons.map((person) =>
+                person.name === personObject.name ? returnedNote : person
+              )
+            );
+          })
+          .catch(() => {
+            alert(`Error`);
+            setPersons(persons.filter((n) => n.id !== personObject.id));
+          });
+        setNewName('');
+        setNewPhone('');
+        return;
+      } else {
+        console.log('Canceled');
+      }
+    } else {
+      personsService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+        setNewName('');
+        setNewPhone('');
+      });
+    }
   }
 
   function handleNameChange(event) {
@@ -51,6 +77,26 @@ function App() {
     setFilterText(event.target.value);
   }
 
+  function onDelete(id) {
+    const personToDelete = persons.find((person) => person.id === id);
+
+    if (window.confirm(`Delete ${personToDelete?.name}?`)) {
+      personsService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((person) => person.id !== id));
+        })
+        .catch(() => {
+          alert(
+            `The person '${personToDelete?.name}' was already deleted from the server.`
+          );
+          setPersons(persons.filter((person) => person.id !== id));
+        });
+    } else {
+      console.log('Canceled');
+    }
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -63,7 +109,13 @@ function App() {
         onPhoneChange={handlePhoneChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={filteredPersons} />
+      {filteredPersons.map((person) => (
+        <Person
+          key={person.id}
+          person={person}
+          onDelete={() => onDelete(person.id)}
+        />
+      ))}
     </div>
   );
 }
