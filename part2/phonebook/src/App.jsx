@@ -3,12 +3,16 @@ import Filter from './components/Filter';
 import PersonForm from './components/PersonForm';
 import Person from './components/Person';
 import personsService from './services/persons';
+import Notification from './components/Notification';
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState('');
   const [newPhone, setNewPhone] = useState('');
   const [filterText, setFilterText] = useState('');
+  const [isNotify, setIsNotify] = useState(false);
+  const [message, setMessage] = useState('');
+  const [notifyClass, setNotifyClass] = useState('');
 
   useEffect(() => {
     personsService.getAll('http://localhost:3001/persons').then((response) => {
@@ -57,11 +61,20 @@ function App() {
         console.log('Canceled');
       }
     } else {
-      personsService.create(personObject).then((returnedPerson) => {
-        setPersons(persons.concat(returnedPerson));
-        setNewName('');
-        setNewPhone('');
-      });
+      personsService
+        .create(personObject)
+        .then((returnedPerson) => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewPhone('');
+        })
+        .then(
+          setTimeout(() => {
+            setMessage(`${newName} was added`);
+            setIsNotify(true);
+            setNotifyClass('success');
+          }, 500)
+        );
     }
   }
 
@@ -79,6 +92,7 @@ function App() {
 
   function onDelete(id) {
     const personToDelete = persons.find((person) => person.id === id);
+    console.log(personToDelete);
 
     if (window.confirm(`Delete ${personToDelete?.name}?`)) {
       personsService
@@ -87,10 +101,13 @@ function App() {
           setPersons(persons.filter((person) => person.id !== id));
         })
         .catch(() => {
-          alert(
-            `The person '${personToDelete?.name}' was already deleted from the server.`
-          );
-          setPersons(persons.filter((person) => person.id !== id));
+          setTimeout(() => {
+            setMessage(
+              `${personToDelete?.name} was already deleted from the server.`
+            );
+            setIsNotify(true);
+            setNotifyClass('error');
+          }, 500);
         });
     } else {
       console.log('Canceled');
@@ -100,6 +117,11 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      {isNotify ? (
+        <Notification message={message} className={notifyClass} />
+      ) : (
+        <></>
+      )}
       <Filter onFilterChange={handleFilterChange} />
       <PersonForm
         onSubmit={onSubmit}
