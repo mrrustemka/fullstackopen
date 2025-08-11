@@ -77,6 +77,7 @@ const unknownEndpoint = (request, response) => {
 };
 
 app.use(unknownEndpoint);
+app.use(express.static('dist'));
 
 const PORT = 3001;
 app.listen(PORT, () => {
