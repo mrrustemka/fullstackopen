@@ -28,7 +28,7 @@ function App() {
     event.preventDefault();
     const personObject = {
       name: newName,
-      phone: newPhone,
+      number: newPhone,
       id: persons.length + 1
     };
 
@@ -39,7 +39,7 @@ function App() {
         )
       ) {
         const person = persons.find((p) => p.name === personObject.name);
-        const changedPerson = { ...person, phone: newPhone };
+        const changedPerson = { ...person, number: newPhone };
 
         personsService
           .update(person.id, changedPerson)
