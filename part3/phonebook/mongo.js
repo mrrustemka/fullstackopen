@@ -10,11 +10,16 @@ const username = process.argv[3];
 const name = process.argv[4];
 const number = process.argv[5];
 
-const url = `mongodb+srv://${username}:${password}@cluster1.iu3vz72.mongodb.net/phoneApp?retryWrites=true&w=majority&appName=Cluster1`;
+const url = process.env.DB_URI;
 
 mongoose.set('strictQuery', false);
 
-mongoose.connect(url);
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true,
+  tls: true
+});
 
 const personSchema = new mongoose.Schema({
   name: String,

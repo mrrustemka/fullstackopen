@@ -1,7 +1,12 @@
 ﻿const mongoose = require('mongoose');
 mongoose.set('strictQuery', false);
 const url = process.env.DB_URI;
-mongoose.connect(url);
+mongoose.connect(url, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true,
+  tls: true
+});
 mongoose
   .connect(url)
   .then((result) => {
