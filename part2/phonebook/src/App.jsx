@@ -74,7 +74,14 @@ function App() {
             setIsNotify(true);
             setNotifyClass('success');
           }, 500)
-        );
+        )
+        .catch((error) => {
+          setTimeout(() => {
+            setMessage(error.response.data.error);
+            setIsNotify(true);
+            setNotifyClass('error');
+          }, 500);
+        });
     }
   }
 
