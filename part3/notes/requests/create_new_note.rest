@@ -1,5 +1,6 @@
 ﻿POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ1c3RlbSIsImlkIjoiNjhkN2Y3YTY3NmIwYjJmYzExZjJlNmE2IiwiaWF0IjoxNzU4OTg3MDczfQ.cKAqNst5_FSM5z_bhL7fNaAb82at_iiXNpLAe8-mpw0
 
 {
   "content": "This is a test note",

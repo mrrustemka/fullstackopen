@@ -1,0 +1,22 @@
+﻿### Get all blogs
+GET http://localhost:3003/api/blogs
+Content-Type: application/json
+
+###
+
+### Create a new blog
+POST http://localhost:3003/api/blogs
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ1c3RlbSIsImlkIjoiNjhkOTY0YmRmMWViYzVlYWNlZjUxNjU4IiwiaWF0IjoxNzU5MzM3OTEzfQ.j7KniWwJDP8T2WlOLcPj1OGEjoMVyboR3IpqHnHtC5w
+Content-Type: application/json
+
+{
+  "title": "06",
+  "author": "rustem",
+  "url": "https://example.com",
+  "likes": 5,
+  "userId": "68d964bdf1ebc5eacef51658"
+}
+
+### Delete a blog
+DELETE http://localhost:3003/api/blogs/5a422a851b54a676234d17f7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJ1c3RlbSIsImlkIjoiNjhkOTY0YmRmMWViYzVlYWNlZjUxNjU4IiwiaWF0IjoxNzU5MzM3OTEzfQ.j7KniWwJDP8T2WlOLcPj1OGEjoMVyboR3IpqHnHtC5w
