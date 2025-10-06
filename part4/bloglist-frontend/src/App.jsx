@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
 import loginService from './services/login';
+import Login from './components/Login';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -49,35 +50,20 @@ const App = () => {
     <div>
       <h1>Blogs</h1>
       {!user && (
-        <form onSubmit={handleLog}>
-          <div>
-            <label>
-              username
-              <input
-                type='text'
-                value={username}
-                onChange={({ target }) => setUsername(target.value)}
-              />
-            </label>
-          </div>
-          <div>
-            <label>
-              password
-              <input
-                type='text'
-                value={password}
-                onChange={({ target }) => setPassword(target.value)}
-              />
-            </label>
-          </div>
-          <button type='submit'>Login</button>
-        </form>
+        <Login
+          handleLog={handleLog}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
       )}
       {user && (
         <>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
+          <p>{user.username} logged in</p>
           <button onClick={handleLogout}>Logout</button>
         </>
       )}
