@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import blogService from './services/blogs';
-import loginService from './services/login';
-import Login from './components/Login';
 import CreateBlog from './components/CreateBlog';
+import Login from './components/Login';
+import loginService from './services/login';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -13,6 +14,8 @@ const App = () => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+  const [notify, setNotify] = useState(null);
+  const [notifyType, setNotifyType] = useState('');
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -41,6 +44,12 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (error) {
+      setNotifyType('error');
+      setNotify(`Wrong username or password`);
+      setTimeout(() => {
+        setNotify(null);
+        setNotifyType('');
+      }, 5000);
       console.error(error);
     }
   }
@@ -56,24 +65,34 @@ const App = () => {
       const blogObject = {
         title: title,
         author: author,
-        // user: '',
-        url: url,
-        likes: 0
+        url: url
       };
       blogService.create(blogObject).then((returnedBlog) => {
+        setNotifyType('info');
+        setNotify(`A new blog ${title} by ${author} added`);
+        setTimeout(() => {
+          setNotify(null);
+          setNotifyType('');
+        }, 5000);
         setBlogs(blogs.concat(returnedBlog));
         setTitle('');
         setAuthor('');
         setUrl('');
       });
     } catch (error) {
-      console.error(error);
+      setNotify(`Couldn't add a blog. There is an error: ${error}`);
+      setNotifyType('error');
+      setTimeout(() => {
+        setNotify(null);
+        setNotifyType('');
+      }, 5000);
     }
   }
 
   return (
     <div>
       <h1>Blogs</h1>
+      <Notification message={notify} type={notifyType} />
       {!user && (
         <Login
           handleLog={handleLog}
