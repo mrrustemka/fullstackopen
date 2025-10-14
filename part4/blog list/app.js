@@ -8,9 +8,9 @@ const loginRouter = require('./controllers/login');
 const blogsRouter = require('./controllers/blogs');
 
 const app = express();
-app.use(middleware.tokenExtractor);
 app.use(cors());
 app.use(express.json());
+app.use(middleware.tokenExtractor);
 
 const mongoUrl = process.env.DB_URI;
 mongoose.connect(mongoUrl);
