@@ -16,6 +16,7 @@ const App = () => {
   const [url, setUrl] = useState('');
   const [notify, setNotify] = useState(null);
   const [notifyType, setNotifyType] = useState('');
+  const [isCreateBlogVisible, setIsCreateBlogVisible] = useState(false);
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -78,6 +79,7 @@ const App = () => {
         setTitle('');
         setAuthor('');
         setUrl('');
+        setIsCreateBlogVisible(!isCreateBlogVisible);
       });
     } catch (error) {
       setNotify(`Couldn't add a blog. There is an error: ${error}`);
@@ -87,6 +89,10 @@ const App = () => {
         setNotifyType('');
       }, 5000);
     }
+  }
+
+  function setCreateBlogVisibility() {
+    setIsCreateBlogVisible(!isCreateBlogVisible);
   }
 
   return (
@@ -104,15 +110,23 @@ const App = () => {
       )}
       {user && (
         <>
-          <CreateBlog
-            addBlog={addBlog}
-            title={title}
-            setTitle={setTitle}
-            author={author}
-            setAuthor={setAuthor}
-            url={url}
-            setUrl={setUrl}
-          />
+          {isCreateBlogVisible && (
+            <>
+              <CreateBlog
+                addBlog={addBlog}
+                title={title}
+                setTitle={setTitle}
+                author={author}
+                setAuthor={setAuthor}
+                url={url}
+                setUrl={setUrl}
+              />
+              <button onClick={setCreateBlogVisibility}>Cancel</button>
+            </>
+          )}
+          {!isCreateBlogVisible && (
+            <button onClick={setCreateBlogVisibility}>Create new blog</button>
+          )}
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
