@@ -57,7 +57,7 @@ const App = () => {
     setUser(null);
   }
 
-  function createBlog(title, author, url) {
+  function createBlog(title, author, url, event) {
     event.preventDefault();
     try {
       const blogObject = {

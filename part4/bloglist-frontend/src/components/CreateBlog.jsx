@@ -7,7 +7,7 @@ function CreateBlog({ createBlog }) {
 
   function addBlog(event) {
     event.preventDefault();
-    createBlog(title, author, url);
+    createBlog(title, author, url, event);
     setTitle('');
     setAuthor('');
     setUrl('');
