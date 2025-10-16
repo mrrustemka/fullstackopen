@@ -11,9 +11,9 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  // const [title, setTitle] = useState('');
+  // const [author, setAuthor] = useState('');
+  // const [url, setUrl] = useState('');
   const [notify, setNotify] = useState(null);
   const [notifyType, setNotifyType] = useState('');
   const [isCreateBlogVisible, setIsCreateBlogVisible] = useState(false);
@@ -57,7 +57,7 @@ const App = () => {
     setUser(null);
   }
 
-  function addBlog(event) {
+  function createBlog(title, author, url) {
     event.preventDefault();
     try {
       const blogObject = {
@@ -73,9 +73,6 @@ const App = () => {
           setNotifyType('');
         }, 5000);
         setBlogs(blogs.concat(returnedBlog));
-        setTitle('');
-        setAuthor('');
-        setUrl('');
         setIsCreateBlogVisible(!isCreateBlogVisible);
       });
     } catch (error) {
@@ -109,15 +106,7 @@ const App = () => {
         <>
           {isCreateBlogVisible && (
             <>
-              <CreateBlog
-                addBlog={addBlog}
-                title={title}
-                setTitle={setTitle}
-                author={author}
-                setAuthor={setAuthor}
-                url={url}
-                setUrl={setUrl}
-              />
+              <CreateBlog createBlog={createBlog} />
               <button onClick={setCreateBlogVisibility}>Cancel</button>
             </>
           )}

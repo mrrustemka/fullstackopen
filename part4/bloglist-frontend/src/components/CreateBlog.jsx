@@ -1,14 +1,18 @@
-﻿import React from 'react';
+﻿import { useState } from 'react';
 
-function CreateBlog({
-  addBlog,
-  title,
-  setTitle,
-  author,
-  setAuthor,
-  url,
-  setUrl
-}) {
+function CreateBlog({ createBlog }) {
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
+
+  function addBlog(event) {
+    event.preventDefault();
+    createBlog(title, author, url);
+    setTitle('');
+    setAuthor('');
+    setUrl('');
+  }
+
   return (
     <>
       <h2>Create Blog</h2>
