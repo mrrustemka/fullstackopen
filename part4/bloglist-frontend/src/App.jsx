@@ -27,7 +27,7 @@ const App = () => {
 
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON);
-      setUsername(user);
+      setUser(user);
       blogService.setToken(user.token);
     }
   }, []);
@@ -36,10 +36,7 @@ const App = () => {
     event.preventDefault();
     try {
       const user = await loginService.login({ username, password });
-      window.localStorage.setItem(
-        'loggedBlogappUser',
-        JSON.stringify(user.token)
-      );
+      window.localStorage.setItem('loggedBlogappUser', JSON.stringify(user));
       blogService.setToken(user.token);
       setUser(user);
       setUsername('');
