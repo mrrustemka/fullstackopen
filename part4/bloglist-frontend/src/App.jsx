@@ -89,6 +89,26 @@ const App = () => {
     setIsCreateBlogVisible(!isCreateBlogVisible);
   }
 
+  async function setBlogLikes(blog, event) {
+    event.preventDefault();
+    try {
+      const updatedBlog = {
+        ...blog,
+        likes: blog.likes
+      };
+      const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
+
+      setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
+    } catch (error) {
+      setNotify(`Couldn't update likes. There is an error: ${error}`);
+      setNotifyType('error');
+      setTimeout(() => {
+        setNotify(null);
+        setNotifyType('');
+      }, 5000);
+    }
+  }
+
   return (
     <div>
       <h1>Blogs</h1>
@@ -114,7 +134,7 @@ const App = () => {
             <button onClick={setCreateBlogVisibility}>Create new blog</button>
           )}
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} setBlogLikes={setBlogLikes} />
           ))}
           <p>{user.username} logged in</p>
           <button onClick={handleLogout}>Logout</button>
