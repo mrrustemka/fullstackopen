@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function Blog({ blog, setBlogLikes }) {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+
   function setDetailsVisibility() {
     setIsDetailsVisible(!isDetailsVisible);
   }

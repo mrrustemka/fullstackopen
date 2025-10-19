@@ -93,11 +93,10 @@ const App = () => {
     event.preventDefault();
     try {
       const updatedBlog = {
-        ...blog,
         likes: blog.likes
       };
-      const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
 
+      const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
       setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
     } catch (error) {
       setNotify(`Couldn't update likes. There is an error: ${error}`);
