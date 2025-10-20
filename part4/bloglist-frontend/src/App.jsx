@@ -88,9 +88,13 @@ const App = () => {
 
   async function removeBlog(id, event) {
     event.preventDefault();
+    const blog = blogs.find((b) => b.id === id);
+
+    const ok = window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`);
+    if (!ok) return;
     try {
       await blogService.remove(id);
-      setBlogs(blogs.filter((b) => b.id !== id));
+      setBlogs(blog);
     } catch (error) {
       setNotify(`Couldn't remove a blog. There is an error: ${error}`);
       setNotifyType('error');
@@ -152,6 +156,7 @@ const App = () => {
                 blog={blog}
                 setBlogLikes={setBlogLikes}
                 remove={removeBlog}
+                user={user}
               />
             ))}
           <p>{user.username} logged in</p>

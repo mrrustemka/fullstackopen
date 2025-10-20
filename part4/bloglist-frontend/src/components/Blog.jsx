@@ -1,7 +1,9 @@
 import { useState } from 'react';
 
-function Blog({ blog, setBlogLikes, remove }) {
+function Blog({ blog, setBlogLikes, remove, user }) {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+  const canRemove =
+    blog.user && (blog.user.id === user.id || blog.user._id === user.id);
 
   function setDetailsVisibility() {
     setIsDetailsVisible(!isDetailsVisible);
@@ -28,7 +30,7 @@ function Blog({ blog, setBlogLikes, remove }) {
             <button onClick={setLike}>Like</button>
           </div>
           <div>{blog.user.username}</div>
-          <button onClick={handleRemove}>Remove</button>
+          {canRemove && <button onClick={handleRemove}>Remove</button>}
         </>
       )}
     </div>
