@@ -11,9 +11,6 @@ const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
-  // const [title, setTitle] = useState('');
-  // const [author, setAuthor] = useState('');
-  // const [url, setUrl] = useState('');
   const [notify, setNotify] = useState(null);
   const [notifyType, setNotifyType] = useState('');
   const [isCreateBlogVisible, setIsCreateBlogVisible] = useState(false);
@@ -89,6 +86,21 @@ const App = () => {
     setIsCreateBlogVisible(!isCreateBlogVisible);
   }
 
+  async function removeBlog(id, event) {
+    event.preventDefault();
+    try {
+      await blogService.remove(id);
+      setBlogs(blogs.filter((b) => b.id !== id));
+    } catch (error) {
+      setNotify(`Couldn't remove a blog. There is an error: ${error}`);
+      setNotifyType('error');
+      setTimeout(() => {
+        setNotify(null);
+        setNotifyType('');
+      }, 5000);
+    }
+  }
+
   async function setBlogLikes(blog, event) {
     event.preventDefault();
     try {
@@ -135,7 +147,12 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} setBlogLikes={setBlogLikes} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                setBlogLikes={setBlogLikes}
+                remove={removeBlog}
+              />
             ))}
           <p>{user.username} logged in</p>
           <button onClick={handleLogout}>Logout</button>

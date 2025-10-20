@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Blog({ blog, setBlogLikes }) {
+function Blog({ blog, setBlogLikes, remove }) {
   const [isDetailsVisible, setIsDetailsVisible] = useState(false);
 
   function setDetailsVisibility() {
@@ -9,6 +9,10 @@ function Blog({ blog, setBlogLikes }) {
 
   function setLike(event) {
     setBlogLikes({ ...blog, likes: blog.likes + 1 }, event);
+  }
+
+  function handleRemove(event) {
+    remove(blog.id, event);
   }
 
   return (
@@ -24,6 +28,7 @@ function Blog({ blog, setBlogLikes }) {
             <button onClick={setLike}>Like</button>
           </div>
           <div>{blog.user.username}</div>
+          <button onClick={handleRemove}>Remove</button>
         </>
       )}
     </div>
