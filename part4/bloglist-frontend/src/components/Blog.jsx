@@ -1,20 +1,20 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 function Blog({ blog, setBlogLikes, remove, user }) {
-  const [isDetailsVisible, setIsDetailsVisible] = useState(false);
+  const [isDetailsVisible, setIsDetailsVisible] = useState(false)
   const canRemove =
-    blog.user && (blog.user.id === user.id || blog.user._id === user.id);
+    blog.user && (blog.user.id === user.id || blog.user._id === user.id)
 
   function setDetailsVisibility() {
-    setIsDetailsVisible(!isDetailsVisible);
+    setIsDetailsVisible(!isDetailsVisible)
   }
 
   function setLike(event) {
-    setBlogLikes({ ...blog, likes: blog.likes + 1 }, event);
+    setBlogLikes({ ...blog, likes: blog.likes + 1 }, event)
   }
 
   function handleRemove(event) {
-    remove(blog.id, event);
+    remove(blog.id, event)
   }
 
   return (
@@ -34,7 +34,7 @@ function Blog({ blog, setBlogLikes, remove, user }) {
         </>
       )}
     </div>
-  );
+  )
 }
 
-export default Blog;
+export default Blog
