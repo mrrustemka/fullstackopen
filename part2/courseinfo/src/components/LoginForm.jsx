@@ -33,7 +33,7 @@
         <button type='submit'>login</button>
       </form>
     </>
-  );
+  )
 }
 
-export default LoginForm;
+export default LoginForm

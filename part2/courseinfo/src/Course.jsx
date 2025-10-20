@@ -1,5 +1,5 @@
-﻿import Header from './Header';
-import Content from './Content';
+﻿import Header from './Header'
+import Content from './Content'
 
 function Course({ course }) {
   return (
@@ -7,7 +7,7 @@ function Course({ course }) {
       <Header course={course} />
       <Content course={course.parts} />
     </>
-  );
+  )
 }
 
-export default Course;
+export default Course

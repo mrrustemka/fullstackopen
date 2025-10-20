@@ -1,4 +1,4 @@
-﻿import Part from './Part';
+﻿import Part from './Part'
 
 function Content({ course }) {
   return (
@@ -7,7 +7,7 @@ function Content({ course }) {
         <Part key={part.id} part={part.name} exercises={part.exercises} />
       ))}
     </>
-  );
+  )
 }
 
-export default Content;
+export default Content

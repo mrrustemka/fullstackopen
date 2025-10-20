@@ -1,17 +1,17 @@
-﻿import { useState, useImperativeHandle } from 'react';
+﻿import { useState, useImperativeHandle } from 'react'
 
 function Togglable(props) {
-  const [visible, setVisible] = useState(false);
-  const hideWhenVisible = { display: visible ? 'none' : '' };
-  const showWhenVisible = { display: visible ? '' : 'none' };
+  const [visible, setVisible] = useState(false)
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   useImperativeHandle(props.ref, () => {
-    return { toggleVisibility };
-  });
+    return { toggleVisibility }
+  })
 
   return (
     <>
@@ -23,7 +23,7 @@ function Togglable(props) {
         <button onClick={toggleVisibility}>Cancel</button>
       </div>
     </>
-  );
+  )
 }
 
-export default Togglable;
+export default Togglable

@@ -2,7 +2,7 @@
 Content-Type: application/json
 
 {
-    "username": "rustem",
-    "name": "rustem",
-    "password": "rustem"
+    "username": "test",
+    "name": "test",
+    "password": "test"
 }

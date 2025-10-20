@@ -1,17 +1,17 @@
-﻿import { useState } from 'react';
+﻿import { useState } from 'react'
 
 function NoteForm({ createNote }) {
-  const [newNote, setNewNote] = useState('');
+  const [newNote, setNewNote] = useState('')
 
   const addNote = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     createNote({
       content: newNote,
       important: true
-    });
+    })
 
-    setNewNote('');
-  };
+    setNewNote('')
+  }
   return (
     <>
       <h2>Create a new note</h2>
@@ -24,7 +24,7 @@ function NoteForm({ createNote }) {
         <button type='submit'>Save</button>
       </form>
     </>
-  );
+  )
 }
 
-export default NoteForm;
+export default NoteForm
