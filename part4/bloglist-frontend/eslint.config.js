@@ -1,5 +1,3 @@
-/* eslint-disable linebreak-style */
-/* eslint-disable semi */
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -31,14 +29,22 @@ export default [
         { allowConstantExport: true }
       ],
       indent: ['error', 2],
-      'linebreak-style': ['error', 'unix'],
+      // 'linebreak-style': ['error', 'unix'],
       quotes: ['error', 'single'],
-      semi: ['error', 'never'],
+      // semi: ['error', 'never'],
       eqeqeq: 'error',
       'no-trailing-spaces': 'error',
       'object-curly-spacing': ['error', 'always'],
       'arrow-spacing': ['error', { before: true, after: true }],
       'no-console': 'off'
+    }
+  },
+  {
+    files: ['**/*.test.{js,jsx}'],
+    languageOptions: {
+      globals: {
+        ...globals.vitest
+      }
     }
   }
 ];
