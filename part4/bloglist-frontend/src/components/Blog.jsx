@@ -27,7 +27,7 @@ function Blog({ blog, setBlogLikes, remove, user }) {
       {isDetailsVisible && (
         <>
           <div>
-            Likes {blog.likes}
+            <h4 className='likes'>Likes {blog.likes}</h4>
             <button onClick={setLike}>Like</button>
           </div>
           <div>{blog.user.username}</div>
