@@ -19,7 +19,7 @@ test('renders content', async () => {
 
   expect(mockHandler.mock.calls).toHaveLength(1);
 
-  screen.debug(element);
+  // screen.debug(element);
 
   const element = screen.getByText(
     'Component testing is done with react-testing-library'
