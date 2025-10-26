@@ -1,9 +1,10 @@
 ﻿import { render, screen } from '@testing-library/react';
-import Blog from './Blog';
 import { expect } from 'vitest';
 import userEvent from '@testing-library/user-event';
+import Blog from './Blog';
+import CreateBlog from './CreateBlog';
 
-test('Does blog have any title and author', () => {
+test('Blog has any title and author', () => {
   const blog = {
     title: 'Title',
     author: 'Author'
@@ -17,7 +18,7 @@ test('Does blog have any title and author', () => {
   expect(author).toBeInTheDocument();
 });
 
-test('Does blog URL and likes shown', async () => {
+test('URL and likes shown', async () => {
   const blog = {
     title: 'Title',
     author: 'Author',
@@ -46,7 +47,7 @@ test('Does blog URL and likes shown', async () => {
   expect(screen.getByText('rustem')).toBeInTheDocument();
 });
 
-test('Does like button calls twice', async () => {
+test('Like button increases likes count and calls handler twice', async () => {
   const blog = {
     title: 'Title',
     author: 'Author',
@@ -76,4 +77,25 @@ test('Does like button calls twice', async () => {
   await user.click(buttonLike);
 
   expect(mockSetLikes).toHaveBeenCalledTimes(2);
+});
+
+test('Form calls handler with right details', async () => {
+  const mockCreateBlog = vi.fn();
+  const user = userEvent.setup();
+
+  render(<CreateBlog createBlog={mockCreateBlog} />);
+
+  await user.type(screen.getByPlaceholderText('Enter title'), 'New York');
+  await user.type(screen.getByPlaceholderText('Enter author'), 'autotest');
+  await user.type(screen.getByPlaceholderText('Enter URL'), 'autotest');
+
+  await user.click(screen.getByText('Create'));
+
+  expect(mockCreateBlog).toHaveBeenCalledTimes(1);
+  expect(mockCreateBlog).toHaveBeenCalledWith(
+    'New York',
+    'autotest',
+    'autotest',
+    expect.any(Object)
+  );
 });

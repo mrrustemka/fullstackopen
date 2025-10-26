@@ -1,16 +1,16 @@
-﻿import { useState } from 'react'
+﻿import { useState } from 'react';
 
 function CreateBlog({ createBlog }) {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const [title, setTitle] = useState('');
+  const [author, setAuthor] = useState('');
+  const [url, setUrl] = useState('');
 
   function addBlog(event) {
-    event.preventDefault()
-    createBlog(title, author, url, event)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    event.preventDefault();
+    createBlog(title, author, url, event);
+    setTitle('');
+    setAuthor('');
+    setUrl('');
   }
 
   return (
@@ -24,8 +24,9 @@ function CreateBlog({ createBlog }) {
               type='text'
               value={title}
               onChange={({ target }) => {
-                setTitle(target.value)
+                setTitle(target.value);
               }}
+              placeholder='Enter title'
             />
           </label>
         </div>
@@ -36,8 +37,9 @@ function CreateBlog({ createBlog }) {
               type='text'
               value={author}
               onChange={({ target }) => {
-                setAuthor(target.value)
+                setAuthor(target.value);
               }}
+              placeholder='Enter author'
             />
           </label>
         </div>
@@ -48,15 +50,16 @@ function CreateBlog({ createBlog }) {
               type='text'
               value={url}
               onChange={({ target }) => {
-                setUrl(target.value)
+                setUrl(target.value);
               }}
+              placeholder='Enter URL'
             />
           </label>
         </div>
         <button type='submit'>Create</button>
       </form>
     </>
-  )
+  );
 }
 
-export default CreateBlog
+export default CreateBlog;
