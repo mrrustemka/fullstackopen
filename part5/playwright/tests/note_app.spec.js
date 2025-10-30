@@ -41,9 +41,9 @@ describe('Note App', () => {
 
     test('A new note can be created', async ({ page }) => {
       await page.getByRole('button', { name: 'new note' }).click();
-      await page.getByLabel('Enter note').fill('1 PW note');
+      await page.getByLabel('Enter note').fill('2 PW note');
       await page.getByRole('button', { name: 'Save' }).click();
-      await expect(page.getByText('1 PW note')).toBeVisible();
+      await expect(page.getByText('2 PW note')).toBeVisible();
     });
 
     describe('and a note exists', () => {
@@ -63,5 +63,19 @@ describe('Note App', () => {
         ).toBeVisible();
       });
     });
+  });
+
+  test('login fails with wrong wdong password', async ({ page }) => {
+    await page.getByRole('button', { name: 'login' }).click();
+    await page.getByLabel('username').fill('PW test');
+    await page.getByLabel('password').fill('wrong');
+    await page.getByRole('button', { name: 'login' }).click();
+
+    const errorDiv = page.locator('.error');
+    await expect(errorDiv).toContainText('wrong credentials');
+    await expect(errorDiv).toHaveCSS('border-style', 'solid');
+    await expect(errorDiv).toHaveCSS('color', 'rgb(255, 0, 0)');
+
+    await expect(page.getByText('rustem')).not.toBeVisible();
   });
 });
