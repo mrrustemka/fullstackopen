@@ -12,7 +12,7 @@
       <form onSubmit={handleSubmit}>
         <div>
           <label>
-            username
+            Username
             <input
               type='text'
               value={username}
@@ -22,7 +22,7 @@
         </div>
         <div>
           <label>
-            password
+            Password
             <input
               type='password'
               value={password}
@@ -33,7 +33,7 @@
         <button type='submit'>login</button>
       </form>
     </>
-  )
+  );
 }
 
-export default LoginForm
+export default LoginForm;
