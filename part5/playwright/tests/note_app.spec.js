@@ -1,7 +1,14 @@
 ﻿const { test, expect, describe, beforeEach } = require('@playwright/test');
-// const { beforeEach } = require('node:test');
 describe('Note App', () => {
-  beforeEach(async ({ page }) => {
+  beforeEach(async ({ page, request }) => {
+    await request.post('http://localhost:3001/api/testing/reset');
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        name: 'PW test',
+        username: 'PW test',
+        password: 'PW test'
+      }
+    });
     await page.goto('http://localhost:3001');
   });
 
@@ -17,28 +24,44 @@ describe('Note App', () => {
 
   test('user can log in', async ({ page }) => {
     await page.getByRole('button', { name: 'login' }).click();
-    await page.getByLabel('username').fill('rustem');
-    await page.getByLabel('password').fill('rustem');
+    await page.getByLabel('username').fill('PW test');
+    await page.getByLabel('password').fill('PW test');
     await page.getByRole('button', { name: 'login' }).click();
 
-    await expect(page.getByText('rustem logged in')).toBeVisible();
+    await expect(page.getByText('PW test logged in')).toBeVisible();
   });
 
   describe('When logged in', () => {
     beforeEach(async ({ page }) => {
       await page.getByRole('button', { name: 'login' }).click();
-      await page.getByLabel('Username').fill('rustem');
-      await page.getByLabel('Password').fill('rustem');
+      await page.getByLabel('Username').fill('PW test');
+      await page.getByLabel('password').fill('PW test');
       await page.getByRole('button', { name: 'login' }).click();
     });
 
     test('A new note can be created', async ({ page }) => {
       await page.getByRole('button', { name: 'new note' }).click();
-      await page.getByLabel('Enter note').fill('A note created by Playwright');
+      await page.getByLabel('Enter note').fill('1 PW note');
       await page.getByRole('button', { name: 'Save' }).click();
-      await expect(
-        page.getByText('A note created by Playwright')
-      ).toBeVisible();
+      await expect(page.getByText('1 PW note')).toBeVisible();
+    });
+
+    describe('and a note exists', () => {
+      beforeEach(async ({ page }) => {
+        await page.getByRole('button', { name: 'new note' }).click();
+        await page.getByRole('textbox').fill('Another note by PW');
+        await page.getByRole('button', { name: 'Save' }).click();
+      });
+
+      test('Importance can be changed', async ({ page }) => {
+        await page
+          .getByRole('button', { name: 'make not important' })
+          .last()
+          .click();
+        expect(
+          page.getByRole('button', { name: 'make important' }).last()
+        ).toBeVisible();
+      });
     });
   });
 });
