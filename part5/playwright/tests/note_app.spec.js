@@ -12,7 +12,7 @@ describe('Note App', () => {
     await page.goto('http://localhost:3001');
   });
 
-  test('front page can be opened', async ({ page }) => {
+  test.only('front page can be opened', async ({ page }) => {
     const locator = page.getByText('Notes');
     await expect(locator).toBeVisible();
     await expect(
