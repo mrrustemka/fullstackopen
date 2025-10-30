@@ -1,18 +1,19 @@
 ﻿const { test, expect, describe, beforeEach } = require('@playwright/test');
+import { loginWith, createNote } from './helper';
 describe('Note App', () => {
   beforeEach(async ({ page, request }) => {
-    await request.post('http://localhost:3001/api/testing/reset');
-    await request.post('http://localhost:3001/api/users', {
+    await request.post('/api/testing/reset');
+    await request.post('/api/users', {
       data: {
         name: 'PW test',
         username: 'PW test',
         password: 'PW test'
       }
     });
-    await page.goto('http://localhost:3001');
+    await page.goto('/');
   });
 
-  test.only('front page can be opened', async ({ page }) => {
+  test('front page can be opened', async ({ page }) => {
     const locator = page.getByText('Notes');
     await expect(locator).toBeVisible();
     await expect(
@@ -23,34 +24,25 @@ describe('Note App', () => {
   });
 
   test('user can log in', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click();
-    await page.getByLabel('username').fill('PW test');
-    await page.getByLabel('password').fill('PW test');
-    await page.getByRole('button', { name: 'login' }).click();
+    await loginWith(page, 'PW test', 'PW test');
 
     await expect(page.getByText('PW test logged in')).toBeVisible();
   });
 
   describe('When logged in', () => {
     beforeEach(async ({ page }) => {
-      await page.getByRole('button', { name: 'login' }).click();
-      await page.getByLabel('Username').fill('PW test');
-      await page.getByLabel('password').fill('PW test');
-      await page.getByRole('button', { name: 'login' }).click();
+      await loginWith(page, 'PW test', 'PW test');
     });
 
     test('A new note can be created', async ({ page }) => {
-      await page.getByRole('button', { name: 'new note' }).click();
-      await page.getByLabel('Enter note').fill('2 PW note');
-      await page.getByRole('button', { name: 'Save' }).click();
-      await expect(page.getByText('2 PW note')).toBeVisible();
+      await createNote(page, '10 Note by PW');
+
+      await expect(page.getByText('10 Note by PW')).toBeVisible();
     });
 
     describe('and a note exists', () => {
       beforeEach(async ({ page }) => {
-        await page.getByRole('button', { name: 'new note' }).click();
-        await page.getByRole('textbox').fill('Another note by PW');
-        await page.getByRole('button', { name: 'Save' }).click();
+        await createNote(page, '10 note by PW');
       });
 
       test('Importance can be changed', async ({ page }) => {
@@ -66,10 +58,7 @@ describe('Note App', () => {
   });
 
   test('login fails with wrong wdong password', async ({ page }) => {
-    await page.getByRole('button', { name: 'login' }).click();
-    await page.getByLabel('username').fill('PW test');
-    await page.getByLabel('password').fill('wrong');
-    await page.getByRole('button', { name: 'login' }).click();
+    await loginWith(page, 'PW test', 'wrong');
 
     const errorDiv = page.locator('.error');
     await expect(errorDiv).toContainText('wrong credentials');
