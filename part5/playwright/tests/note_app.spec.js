@@ -40,18 +40,22 @@ describe('Note App', () => {
       await expect(page.getByText('10 Note by PW')).toBeVisible();
     });
 
-    describe('and a note exists', () => {
+    describe('and severla notes exists', () => {
       beforeEach(async ({ page }) => {
-        await createNote(page, '10 note by PW');
+        await createNote(page, '11 note by PW');
+        await createNote(page, '12 note by PW');
+        await createNote(page, '13 note by PW');
       });
 
-      test('Importance can be changed', async ({ page }) => {
-        await page
+      test('one of those can be madenonimortant', async ({ page }) => {
+        const otherNoteText = page.getByText('12 note by PW');
+        const otherNoteElement = otherNoteText.locator('..');
+
+        await otherNoteElement
           .getByRole('button', { name: 'make not important' })
-          .last()
           .click();
-        expect(
-          page.getByRole('button', { name: 'make important' }).last()
+        await expect(
+          otherNoteElement.getByText('make important')
         ).toBeVisible();
       });
     });
