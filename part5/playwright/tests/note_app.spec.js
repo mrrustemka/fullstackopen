@@ -35,20 +35,20 @@ describe('Note App', () => {
     });
 
     test('A new note can be created', async ({ page }) => {
-      await createNote(page, '10 Note by PW');
+      await createNote(page, '20 Note by PW');
 
-      await expect(page.getByText('10 Note by PW')).toBeVisible();
+      await expect(page.getByText('20 Note by PW')).toBeVisible();
     });
 
-    describe('and severla notes exists', () => {
+    describe('and several notes exists', () => {
       beforeEach(async ({ page }) => {
-        await createNote(page, '11 note by PW');
-        await createNote(page, '12 note by PW');
-        await createNote(page, '13 note by PW');
+        await createNote(page, '21 note by PW');
+        await createNote(page, '22 note by PW');
+        await createNote(page, '23 note by PW');
       });
 
-      test('one of those can be madenonimortant', async ({ page }) => {
-        const otherNoteText = page.getByText('12 note by PW');
+      test('one of those can be made nonimortant', async ({ page }) => {
+        const otherNoteText = page.getByText('22 note by PW');
         const otherNoteElement = otherNoteText.locator('..');
 
         await otherNoteElement
