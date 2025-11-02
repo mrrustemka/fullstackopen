@@ -1,19 +1,8 @@
 ﻿const { test, expect, beforeEach, describe } = require('@playwright/test');
-const { loginWith } = require('./heper');
+const { loginWith, createBlog } = require('./heper');
 
 describe('Blog app', () => {
   beforeEach(async ({ page, request }) => {
-    // I don't want to reset users in DB every time
-    // I created test user once and would like to use it
-
-    // await request.post('/api/testin/reset');
-    // await request.post('/api/users', {
-    //   data: {
-    //     name: 'PW test',
-    //     username: 'PW test',
-    //     password: 'PW test'
-    //   }
-    // });
     await page.goto('/');
   });
 
@@ -23,14 +12,29 @@ describe('Blog app', () => {
 
   describe('Login', () => {
     test('succeeds with correct credentials', async ({ page }) => {
-      loginWith(page, 'test', 'test');
+      await loginWith(page, 'test', 'test');
 
       await expect(page.getByText('test logged in')).toBeVisible();
     });
 
     test('fails with wrong credentials', async ({ page }) => {
-      loginWith(page, 'test', 'wrong');
+      await loginWith(page, 'test', 'wrong');
+
       await expect(page.getByText('Wrong username or password')).toBeVisible();
+    });
+  });
+
+  describe('When logged in', () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, 'test', 'test');
+    });
+
+    test('a new blog can be created', async ({ page }) => {
+      await createBlog(page, 'Test PW Title', 'Test PW Author', 'Test PW url');
+
+      await expect(
+        page.getByText('A new blog Test PW Title by Test PW Author added')
+      ).toBeVisible();
     });
   });
 });
