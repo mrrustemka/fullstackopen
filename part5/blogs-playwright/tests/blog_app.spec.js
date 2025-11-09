@@ -36,5 +36,22 @@ describe('Blog app', () => {
         page.getByText('A new blog Test PW Title by Test PW Author added')
       ).toBeVisible();
     });
+
+    test('a blog can be liked', async ({ page }) => {
+      await page.getByRole('button', { name: 'View' }).first().click();
+
+      const likesElement = page.locator('.likes');
+      const likesText = await likesElement.textContent();
+      const initialLikes = likesText.split(' ')[1];
+      const curLikes = 0;
+
+      await page.getByRole('button', { name: 'Like' }).click();
+      setTimeout(async () => {
+        likesText = await likesElement.textContent();
+        curLikes = likesText.split(' ')[1];
+      }, 3000);
+
+      expect(curLikes === initialLikes + 1);
+    });
   });
 });
