@@ -77,9 +77,28 @@ describe('Blog app', () => {
 
         if (author !== 'test') {
           await expect(
-            blog.getByRole('button', { name: 'Remove' }).toBeHidden();
+            blog.getByRole('button', { name: 'Remove' }).toBeHidden()
           );
         }
+      }
+    });
+
+    test('blog with the most likes first', async ({ page }) => {
+      const blogCount = await page.locator('.blog').count();
+
+      const likesArray = [];
+
+      for (let i = 0; i < blogCount; i++) {
+        const blog = page.locator('.blog').nth(i);
+        await blog.getByRole('button', { name: 'View' }).click();
+
+        const textLikes = await blog.locator('.likes').textContent();
+        const likes = parseInt(textLikes.split(' ')[1]);
+        likesArray.push(likes);
+      }
+
+      for (let i = 0; i < likesArray.length - 1; i++) {
+        expect(likesArray[i]).toBeGreaterThanOrEqual(likesArray[i + 1]);
       }
     });
   });
