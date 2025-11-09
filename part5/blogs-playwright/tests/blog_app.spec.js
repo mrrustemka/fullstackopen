@@ -53,5 +53,7 @@ describe('Blog app', () => {
 
       expect(curLikes === initialLikes + 1);
     });
+
+    test('a new blog can be deleted', async ({ page }) => {});
   });
 });
