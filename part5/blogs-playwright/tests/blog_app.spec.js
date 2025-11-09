@@ -54,6 +54,15 @@ describe('Blog app', () => {
       expect(curLikes === initialLikes + 1);
     });
 
-    test('a new blog can be deleted', async ({ page }) => {});
+    test('a new blog can be deleted', async ({ page }) => {
+      await page.getByRole('button', { name: 'View' }).last().click();
+      await page.getByRole('button', { name: 'Remove' }).click();
+
+      page.on('dialog', async (dialog) => {
+        await dialog.accept();
+      });
+
+      await expect(page.getByText('Test PW Title')).toBeHidden();
+    });
   });
 });
