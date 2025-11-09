@@ -64,5 +64,23 @@ describe('Blog app', () => {
 
       await expect(page.getByText('Test PW Title')).toBeHidden();
     });
+
+    test('only the user who added the blog sees the blog remove button', async ({
+      page
+    }) => {
+      const blogs = await page.locator('.blog').all();
+
+      for (const blog of blogs) {
+        await page.getByRole('button', { name: 'View' }).click();
+
+        const author = await blog.locator('.author').textContent();
+
+        if (author !== 'test') {
+          await expect(
+            blog.getByRole('button', { name: 'Remove' }).toBeHidden();
+          );
+        }
+      }
+    });
   });
 });
