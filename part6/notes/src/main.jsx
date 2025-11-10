@@ -1,17 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
+import noteReducer from './reducers/noteReducer';
 import { createStore } from 'redux';
-
-const noteReducer = (state = [], action) => {
-  switch (action.type) {
-    case 'NEW_NOTE':
-      state.concat(action.payload);
-      return state;
-    default:
-      return state;
-  }
-};
 
 const store = createStore(noteReducer);
 
