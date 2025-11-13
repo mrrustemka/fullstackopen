@@ -1,5 +1,5 @@
 {
-  "name": "unicafe-redux",
+  "name": "part6-redux-notes",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -13,6 +13,7 @@
   "dependencies": {
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-redux": "^9.2.0",
     "redux": "^5.0.1"
   },
   "devDependencies": {
