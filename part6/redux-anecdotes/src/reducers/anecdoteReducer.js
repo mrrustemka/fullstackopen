@@ -30,7 +30,6 @@ const reducer = (state = initialState, action) => {
         votes: anecdoteToChange.votes + 1
       };
 
-      console.log(state);
       return state.map((anecdote) =>
         anecdote.id === changedAnecdote.id ? changedAnecdote : anecdote
       );
