@@ -34,9 +34,19 @@ const reducer = (state = initialState, action) => {
         anecdote.id === changedAnecdote.id ? changedAnecdote : anecdote
       );
     }
+    case 'NEW_ANECDOTE': {
+      return [...state, action.payload];
+    }
     default:
       return state;
   }
+};
+
+export const createAnecdote = (content) => {
+  return {
+    type: 'NEW_ANECDOTE',
+    payload: asObject(content)
+  };
 };
 
 export default reducer;
