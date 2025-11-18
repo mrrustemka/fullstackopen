@@ -18,7 +18,7 @@ describe('noteReducer', () => {
   });
 });
 
-test('returns new state with action TOGGLE_IMPORTANCE', () => {
+test('returns new state with action notes/toggleImportanceOf', () => {
   const state = [
     {
       content: 'the app state is in redux store',
@@ -33,7 +33,7 @@ test('returns new state with action TOGGLE_IMPORTANCE', () => {
   ];
 
   const action = {
-    type: 'TOGGLE_IMPORTANCE',
+    type: 'notes/toggleImportanceOf',
     payload: {
       id: 2
     }
