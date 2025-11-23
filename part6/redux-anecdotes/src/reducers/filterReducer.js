@@ -8,7 +8,6 @@
 }
 
 export function filterChange(filter) {
-  console.log(filter);
   return {
     type: 'SET_FILTER',
     payload: filter
