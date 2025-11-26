@@ -2,7 +2,7 @@
 
 import anecdoteReducer from './reducers/anecdoteReducer';
 import filterReducer from './reducers/filterReducer';
-emport { notificationReducer}
+import notificationReducer from './reducers/notificationReducer';
 
 const store = configureStore({
   reducer: {
