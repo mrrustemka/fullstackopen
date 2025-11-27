@@ -29,6 +29,89 @@
       "content": "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
       "id": "98312",
       "votes": 0
+    },
+    {
+      "id": "453e",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new"
+      },
+      "votes": 0
+    },
+    {
+      "id": "4535",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new"
+      },
+      "votes": 0
+    },
+    {
+      "id": "0b4e",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new-1"
+      },
+      "votes": 0
+    },
+    {
+      "id": "5109",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new"
+      },
+      "votes": 0
+    },
+    {
+      "id": "7a47",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new"
+      },
+      "votes": 0
+    },
+    {
+      "id": "983f",
+      "anecdote": {
+        "type": "anecdote/createAnecdote",
+        "payload": "new"
+      },
+      "votes": 0
+    },
+    {
+      "id": "7109",
+      "anecdote": "new",
+      "votes": 0
+    },
+    {
+      "id": "f47d",
+      "anecdote": "new",
+      "votes": 0
+    },
+    {
+      "id": "ba37",
+      "anecdote": "new",
+      "votes": 0
+    },
+    {
+      "id": "a862",
+      "anecdote": "new",
+      "votes": 0
+    },
+    {
+      "id": "ff3f",
+      "anecdote": "sdf",
+      "votes": 0
+    },
+    {
+      "id": "a278",
+      "anecdote": "asdasd",
+      "votes": 0
+    },
+    {
+      "id": "c6c7",
+      "content": "asdasd",
+      "votes": 0
     }
   ]
 }

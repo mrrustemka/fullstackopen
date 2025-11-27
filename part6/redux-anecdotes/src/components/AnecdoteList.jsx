@@ -5,7 +5,7 @@ import { setNotify } from '../reducers/notificationReducer';
 function AnecdoteList() {
   const dispatch = useDispatch();
   const anecdotes = useSelector(({ filter, anecdotes }) => {
-    return anecdotes.filter((anecdote) => anecdote.content.includes(filter));
+    return anecdotes.filter((anecdote) => anecdote.content?.includes(filter));
   });
 
   const vote = (id) => {
