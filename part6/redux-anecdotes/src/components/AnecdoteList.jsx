@@ -5,13 +5,21 @@ import { setNotify } from '../reducers/notificationReducer';
 function AnecdoteList() {
   const dispatch = useDispatch();
   const anecdotes = useSelector(({ filter, anecdotes }) => {
-    return anecdotes.filter((anecdote) => anecdote.content?.includes(filter));
+    if (!Array.isArray(anecdotes)) return [];
+
+    return anecdotes.filter((anecdote) => {
+      if (!anecdote.content || typeof anecdote.content !== 'string')
+        return false;
+
+      return anecdote.content.toLowerCase().includes(filter.toLowerCase());
+    });
   });
 
   const vote = (id) => {
     dispatch(setVote(id));
     dispatch(setNotify('You Voted'));
   };
+
   return (
     <>
       <h2>Anecdotes</h2>
