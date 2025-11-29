@@ -13,7 +13,7 @@
     {
       "content": "The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.",
       "id": "69581",
-      "votes": 2
+      "votes": 5
     },
     {
       "content": "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
@@ -116,7 +116,17 @@
     {
       "id": "3acf",
       "content": "new",
-      "votes": 3
+      "votes": 15
+    },
+    {
+      "id": "e448",
+      "content": "asd",
+      "votes": 0
+    },
+    {
+      "id": "0d46",
+      "content": "dsgffs",
+      "votes": 0
     }
   ]
 }
