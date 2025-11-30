@@ -1,11 +1,35 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 
 const App = () => {
-  const handleVote = (anecdote) => {
-    console.log('vote')
+  const queryClient = useQueryClient()
+
+  const voteAnecdote = async (updatedAnecdote) => {
+    const options = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(updatedAnecdote),
+    }
+
+    const response = await fetch(
+      `http://localhost:3001/anecdotes/${updatedAnecdote.id}`,
+      options,
+    )
+
+    if (!response.ok) {
+      throw new Error('Failed to update anecdote')
+    }
+    return await response.json()
   }
+
+  const updatedAnecdoteMutation = useMutation({
+    mutationFn: voteAnecdote,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['anecdotes'] })
+    },
+  })
 
   const result = useQuery({
     queryKey: ['anecdotes'],
@@ -18,6 +42,10 @@ const App = () => {
     },
     retry: 1,
   })
+
+  const handleVote = (anecdote) => {
+    updatedAnecdoteMutation.mutate({ ...anecdote, votes: anecdote.votes + 1 })
+  }
 
   console.log(JSON.parse(JSON.stringify(result)))
 
