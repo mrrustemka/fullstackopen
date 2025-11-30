@@ -8,11 +8,11 @@ export const getNotes = async () => {
   return await response.json();
 };
 
-export const createNote = async (content) => {
+export const createNote = async (newNote) => {
   const options = {
-    merhod: 'POST',
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(content)
+    body: JSON.stringify(newNote)
   };
 
   const response = await fetch(baseUrl, options);
