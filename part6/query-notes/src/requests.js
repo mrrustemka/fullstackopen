@@ -7,3 +7,35 @@ export const getNotes = async () => {
   }
   return await response.json();
 };
+
+export const createNote = async (content) => {
+  const options = {
+    merhod: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(content)
+  };
+
+  const response = await fetch(baseUrl, options);
+
+  if (!response.ok) {
+    throw new Error('Failed to create note');
+  }
+
+  return await response.json();
+};
+
+export const updateNote = async (updatedNote) => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedNote)
+  };
+
+  const response = await fetch(`${baseUrl}/${updatedNote.id}`, options);
+
+  if (!response.ok) {
+    throw new Error('Failed to update a note');
+  }
+
+  return await response.json();
+};
