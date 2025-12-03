@@ -3,11 +3,11 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
 
-  const createAnecdote = async (content) => {
+  const createAnecdote = async (newAnecdote) => {
     const options = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content }),
+      body: JSON.stringify(newAnecdote),
     }
 
     const response = await fetch('http://localhost:3001/anecdotes', options)
@@ -30,7 +30,7 @@ const AnecdoteForm = () => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate(content)
+    newAnecdoteMutation.mutate({ content })
   }
 
   return (
