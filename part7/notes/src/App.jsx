@@ -71,7 +71,7 @@ const Login = (props) => {
 
   const onSubmit = (event) => {
     event.preventDefault();
-    props.onLogin('mluukkai');
+    props.onLogin('Rust');
     navigate('/');
   };
 
