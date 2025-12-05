@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Footer from './Footer';
 import Menu from './Menu';
+import Notification from './Notification';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 const App = () => {
@@ -26,6 +27,7 @@ const App = () => {
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    setNotification(`A new anecdote ${anecdote.content} created!`);
   };
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
@@ -44,6 +46,7 @@ const App = () => {
   return (
     <Router>
       <h1>Software anecdotes</h1>
+      <Notification notification={notification} />
       <Menu addNew={addNew} anecdotes={anecdotes} />
       <Footer />
     </Router>

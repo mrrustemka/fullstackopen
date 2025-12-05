@@ -1,9 +1,11 @@
 ﻿import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('');
   const [author, setAuthor] = useState('');
   const [info, setInfo] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -13,14 +15,20 @@ const CreateNew = (props) => {
       info,
       votes: 0
     });
+    navigate('/');
+  };
+
+  const buttonStyles = {
+    textDecoration: 'none',
+    color: 'black'
   };
 
   return (
     <div>
-      <h2>create a new anecdote</h2>
+      <h2>Create a new anecdote</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          content
+          Content
           <input
             name='content'
             value={content}
@@ -43,7 +51,7 @@ const CreateNew = (props) => {
             onChange={(e) => setInfo(e.target.value)}
           />
         </div>
-        <button>Create</button>
+        <button type='submit'>Create</button>
       </form>
     </div>
   );
