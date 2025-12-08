@@ -24,6 +24,12 @@ const CreateNew = (props) => {
     color: 'black'
   };
 
+  const reset = () => {
+    content.onReset();
+    author.onReset();
+    info.onReset();
+  };
+
   return (
     <div>
       <h2>Create a new anecdote</h2>
@@ -56,6 +62,9 @@ const CreateNew = (props) => {
           />
         </div>
         <button type='submit'>Create</button>
+        <button type='reset' onClick={reset}>
+          Reset
+        </button>
       </form>
     </div>
   );
