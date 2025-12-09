@@ -1,5 +1,3 @@
 ﻿const App = () => {
-  return <div>Hello Webpack</div>;
+  return <div>hello webpack</div>;
 };
-
-export default App;
