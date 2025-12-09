@@ -42,7 +42,7 @@ const Note = ({ note }) => {
 const Notes = ({ notes }) => (
   <div>
     <h2>Notes</h2>
-    <Table striped>
+    <table>
       <tbody>
         {notes.map((note) => (
           <tr key={note.id}>
@@ -53,7 +53,7 @@ const Notes = ({ notes }) => (
           </tr>
         ))}
       </tbody>
-    </Table>
+    </table>
   </div>
 );
 
