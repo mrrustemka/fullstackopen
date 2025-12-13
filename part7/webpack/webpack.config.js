@@ -1,4 +1,15 @@
 const path = require('path');
+const { argv } = require('process');
+const webpack = require('webpack');
+
+const config = (env, argv) => {
+  console.log('argv.mode: ', argv.mode);
+};
+
+const backend_url =
+  argv.mode === 'production'
+    ? 'https://notes2023.fly.dev/api/notes'
+    : 'http://localhost:3001/notes';
 
 module.exports = {
   entry: './src/index.js',
@@ -30,6 +41,11 @@ module.exports = {
       }
     ]
   },
+  plugins: [
+    new webpack.DefinePlugin({
+      BACKEND_URL: JSON.stringify(backend_url)
+    })
+  ],
   resolve: {
     extensions: ['.js', '.jsx']
   }
