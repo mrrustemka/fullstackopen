@@ -5,15 +5,17 @@ import CreateBlog from './components/CreateBlog';
 import Login from './components/Login';
 import loginService from './services/login';
 import Notification from './components/Notification';
+import { useDispatch } from 'react-redux';
+import { notify } from './reducers/notifyReducer';
 
 const App = () => {
 	const [blogs, setBlogs] = useState([]);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [user, setUser] = useState(null);
-	const [notify, setNotify] = useState(null);
 	const [notifyType, setNotifyType] = useState('');
 	const [isCreateBlogVisible, setIsCreateBlogVisible] = useState(false);
+	const dispatch = useDispatch();
 
 	useEffect(() => {
 		blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -66,22 +68,13 @@ const App = () => {
 				url: url,
 			};
 			blogService.create(blogObject).then((returnedBlog) => {
-				setNotifyType('info');
-				setNotify(`A new blog ${title} by ${author} added`);
-				setTimeout(() => {
-					setNotify(null);
-					setNotifyType('');
-				}, 5000);
 				setBlogs(blogs.concat(returnedBlog));
 				setIsCreateBlogVisible(!isCreateBlogVisible);
+				dispatch(notify(`A new blog "${title}" by ${author} added`, 'info'));
 			});
 		} catch (error) {
-			setNotify(`Couldn't add a blog. There is an error: ${error}`);
-			setNotifyType('error');
-			setTimeout(() => {
-				setNotify(null);
-				setNotifyType('');
-			}, 5000);
+			dispatch(notify(`Couldn't add a blog`, 'error'));
+			console.error(error);
 		}
 	}
 
@@ -130,7 +123,7 @@ const App = () => {
 	return (
 		<div>
 			<h1>Blogs</h1>
-			<Notification message={notify} type={notifyType} />
+			<Notification />
 			{!user && (
 				<Login
 					handleLog={handleLog}
