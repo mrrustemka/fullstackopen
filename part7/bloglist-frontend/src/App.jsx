@@ -8,7 +8,7 @@ import Notification from './components/Notification';
 import { useDispatch, useSelector } from 'react-redux';
 import { initializeBlogs } from './reducers/blogsReducer';
 import { notify } from './reducers/notifyReducer';
-import { newBlog } from './reducers/blogsReducer';
+import { newBlog, addLike, deleteBlog } from './reducers/blogsReducer';
 
 const App = () => {
 	const [username, setUsername] = useState('');
@@ -88,43 +88,35 @@ const App = () => {
 		setIsCreateBlogVisible(!isCreateBlogVisible);
 	}
 
-	// async function removeBlog(id, event) {
-	// 	event.preventDefault();
-	// 	const blog = blogs.find((b) => b.id === id);
+	async function removeBlog(id, event) {
+		event.preventDefault();
+		const blog = blogs.find((b) => b.id === id);
 
-	// 	const ok = window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`);
-	// 	if (!ok) return;
-	// 	try {
-	// 		await blogService.remove(id);
-	// 		setBlogs(blogs.filter((b) => b.id !== id));
-	// 	} catch (error) {
-	// 		setNotify(`Couldn't remove a blog. There is an error: ${error}`);
-	// 		setNotifyType('error');
-	// 		setTimeout(() => {
-	// 			setNotify(null);
-	// 			setNotifyType('');
-	// 		}, 5000);
-	// 	}
-	// }
+		const ok = window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`);
 
-	// async function setBlogLikes(blog, event) {
-	// 	event.preventDefault();
-	// 	try {
-	// 		const updatedBlog = {
-	// 			likes: blog.likes,
-	// 		};
+		if (!ok) return;
 
-	// 		const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
-	// 		setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
-	// 	} catch (error) {
-	// 		setNotify(`Couldn't update likes. There is an error: ${error}`);
-	// 		setNotifyType('error');
-	// 		setTimeout(() => {
-	// 			setNotify(null);
-	// 			setNotifyType('');
-	// 		}, 5000);
-	// 	}
-	// }
+		try {
+			dispatch(deleteBlog(blog.id));
+		} catch (error) {
+			dispatch(notify(`Couldn't remove a blog. There is an error: ${error}`));
+			setNotifyType('error');
+		}
+	}
+
+	async function setBlogLikes(blog, event) {
+		event.preventDefault();
+		const updatedBlog = {
+			likes: blog.likes,
+		};
+
+		try {
+			dispatch(addLike(blog.id, updatedBlog));
+		} catch (error) {
+			dispatch(notify(`Couldn't update likes. There is an error: ${error}`));
+			setNotifyType('error');
+		}
+	}
 
 	return (
 		<div>
@@ -156,8 +148,8 @@ const App = () => {
 							<Blog
 								key={blog.id}
 								blog={blog}
-								// setBlogLikes={setBlogLikes}
-								// remove={removeBlog}
+								setBlogLikes={setBlogLikes}
+								remove={removeBlog}
 								user={user}
 							/>
 						))}
