@@ -5,11 +5,12 @@ import CreateBlog from './components/CreateBlog';
 import Login from './components/Login';
 import loginService from './services/login';
 import Notification from './components/Notification';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeBlogs } from './reducers/blogsReducer';
 import { notify } from './reducers/notifyReducer';
+import { newBlog } from './reducers/blogsReducer';
 
 const App = () => {
-	const [blogs, setBlogs] = useState([]);
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [user, setUser] = useState(null);
@@ -18,8 +19,14 @@ const App = () => {
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		blogService.getAll().then((blogs) => setBlogs(blogs));
-	}, []);
+		dispatch(initializeBlogs());
+	}, [dispatch]);
+
+	const blogs = useSelector(({ blogs }) => {
+		if (!Array.isArray(blogs)) return [];
+
+		return blogs;
+	});
 
 	useEffect(() => {
 		const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
@@ -59,19 +66,18 @@ const App = () => {
 		setUser(null);
 	}
 
-	function createBlog(title, author, url, event) {
+	async function createBlog(title, author, url, event) {
 		event.preventDefault();
+
 		try {
-			const blogObject = {
+			const newObject = {
 				title: title,
 				author: author,
 				url: url,
 			};
-			blogService.create(blogObject).then((returnedBlog) => {
-				setBlogs(blogs.concat(returnedBlog));
-				setIsCreateBlogVisible(!isCreateBlogVisible);
-				dispatch(notify(`A new blog "${title}" by ${author} added`, 'info'));
-			});
+			dispatch(newBlog(newObject));
+			dispatch(notify(`A new blog "${title}" by ${author} added`, 'info'));
+			setIsCreateBlogVisible(!isCreateBlogVisible);
 		} catch (error) {
 			dispatch(notify(`Couldn't add a blog`, 'error'));
 			console.error(error);
@@ -82,43 +88,43 @@ const App = () => {
 		setIsCreateBlogVisible(!isCreateBlogVisible);
 	}
 
-	async function removeBlog(id, event) {
-		event.preventDefault();
-		const blog = blogs.find((b) => b.id === id);
+	// async function removeBlog(id, event) {
+	// 	event.preventDefault();
+	// 	const blog = blogs.find((b) => b.id === id);
 
-		const ok = window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`);
-		if (!ok) return;
-		try {
-			await blogService.remove(id);
-			setBlogs(blogs.filter((b) => b.id !== id));
-		} catch (error) {
-			setNotify(`Couldn't remove a blog. There is an error: ${error}`);
-			setNotifyType('error');
-			setTimeout(() => {
-				setNotify(null);
-				setNotifyType('');
-			}, 5000);
-		}
-	}
+	// 	const ok = window.confirm(`Remove blog "${blog.title}" by ${blog.author}?`);
+	// 	if (!ok) return;
+	// 	try {
+	// 		await blogService.remove(id);
+	// 		setBlogs(blogs.filter((b) => b.id !== id));
+	// 	} catch (error) {
+	// 		setNotify(`Couldn't remove a blog. There is an error: ${error}`);
+	// 		setNotifyType('error');
+	// 		setTimeout(() => {
+	// 			setNotify(null);
+	// 			setNotifyType('');
+	// 		}, 5000);
+	// 	}
+	// }
 
-	async function setBlogLikes(blog, event) {
-		event.preventDefault();
-		try {
-			const updatedBlog = {
-				likes: blog.likes,
-			};
+	// async function setBlogLikes(blog, event) {
+	// 	event.preventDefault();
+	// 	try {
+	// 		const updatedBlog = {
+	// 			likes: blog.likes,
+	// 		};
 
-			const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
-			setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
-		} catch (error) {
-			setNotify(`Couldn't update likes. There is an error: ${error}`);
-			setNotifyType('error');
-			setTimeout(() => {
-				setNotify(null);
-				setNotifyType('');
-			}, 5000);
-		}
-	}
+	// 		const returnedBlog = await blogService.setLikes(blog.id, updatedBlog);
+	// 		setBlogs(blogs.map((b) => (b.id === blog.id ? returnedBlog : b)));
+	// 	} catch (error) {
+	// 		setNotify(`Couldn't update likes. There is an error: ${error}`);
+	// 		setNotifyType('error');
+	// 		setTimeout(() => {
+	// 			setNotify(null);
+	// 			setNotifyType('');
+	// 		}, 5000);
+	// 	}
+	// }
 
 	return (
 		<div>
@@ -145,13 +151,13 @@ const App = () => {
 						<button onClick={setCreateBlogVisibility}>Create new blog</button>
 					)}
 					{blogs
-						.sort((a, b) => b.likes - a.likes)
+						// .sort((a, b) => b.likes - a.likes)
 						.map((blog) => (
 							<Blog
 								key={blog.id}
 								blog={blog}
-								setBlogLikes={setBlogLikes}
-								remove={removeBlog}
+								// setBlogLikes={setBlogLikes}
+								// remove={removeBlog}
 								user={user}
 							/>
 						))}

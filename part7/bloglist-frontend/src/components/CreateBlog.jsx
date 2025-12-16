@@ -1,9 +1,12 @@
 ﻿import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { newBlog } from '../reducers/blogsReducer';
 
 function CreateBlog({ createBlog }) {
 	const [title, setTitle] = useState('');
 	const [author, setAuthor] = useState('');
 	const [url, setUrl] = useState('');
+	const dispatch = useDispatch();
 
 	function addBlog(event) {
 		event.preventDefault();
