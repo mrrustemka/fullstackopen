@@ -14,7 +14,6 @@ const App = () => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [user, setUser] = useState(null);
-	const [notifyType, setNotifyType] = useState('');
 	const [isCreateBlogVisible, setIsCreateBlogVisible] = useState(false);
 	const dispatch = useDispatch();
 
@@ -51,12 +50,7 @@ const App = () => {
 			setUsername('');
 			setPassword('');
 		} catch (error) {
-			setNotifyType('error');
-			setNotify('Wrong username or password');
-			setTimeout(() => {
-				setNotify(null);
-				setNotifyType('');
-			}, 5000);
+			dispatch(notify(`Wrong username or password`, 'error'));
 			console.error(error);
 		}
 	}
@@ -99,8 +93,7 @@ const App = () => {
 		try {
 			dispatch(deleteBlog(blog.id));
 		} catch (error) {
-			dispatch(notify(`Couldn't remove a blog. There is an error: ${error}`));
-			setNotifyType('error');
+			dispatch(notify(`Couldn't remove a blog. There is an error: ${error}`, 'error'));
 		}
 	}
 
@@ -114,7 +107,6 @@ const App = () => {
 			dispatch(addLike(blog.id, updatedBlog));
 		} catch (error) {
 			dispatch(notify(`Couldn't update likes. There is an error: ${error}`));
-			setNotifyType('error');
 		}
 	}
 
