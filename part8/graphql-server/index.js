@@ -24,20 +24,20 @@ let persons = [
   }
 ];
 
-const typeDefs = `
-    type Person {
+const typeDefs = /* GraphQL */ `
+  type Person {
     name: String!
     phone: String!
     street: String!
     city: String!
     id: ID!
-}
+  }
 
-type Query {
+  type Query {
     personCount: Int!
     allPersons: [Person!]
     findPerson(name: String!): Person
-}
+  }
 `;
 
 const resolvers = {
