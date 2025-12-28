@@ -42,6 +42,15 @@ const typeDefs = /* GraphQL */ `
     street: String!
     city: String!
   }
+
+  type Mutation {
+    addPerson(
+      name: String!
+      phone: String
+      street: String!
+      city: String!
+    ): Person
+  }
 `;
 
 const resolvers = {
@@ -56,6 +65,13 @@ const resolvers = {
         street,
         city
       };
+    }
+  },
+  Mutation: {
+    addPerson: (root, args) => {
+      const person = { ...args, id: uuid() };
+      persons = persons.concat(person);
+      return person;
     }
   }
 };
