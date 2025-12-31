@@ -115,13 +115,17 @@ const typeDefs = /* GraphQL */ `
   type Query {
     authorCount: Int
     bookCount: Int
+    allBooks: [Book!]
   }
 `;
 
 const resolvers = {
   Query: {
     authorCount: () => authors.length,
-    bookCount: () => books.length
+    bookCount: () => books.length,
+    allBooks: (root, args) => {
+      return books;
+    }
   }
 };
 
