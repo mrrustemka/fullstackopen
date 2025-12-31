@@ -93,15 +93,12 @@ let books = [
   }
 ];
 
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
-
 const typeDefs = /* GraphQL */ `
   type Author {
     name: String!
     id: ID!
     born: Int
+    bookCount: Int!
   }
 
   type Book {
@@ -116,6 +113,7 @@ const typeDefs = /* GraphQL */ `
     authorCount: Int
     bookCount: Int
     allBooks: [Book!]
+    allAuthors: [Author!]
   }
 `;
 
@@ -123,8 +121,12 @@ const resolvers = {
   Query: {
     authorCount: () => authors.length,
     bookCount: () => books.length,
-    allBooks: (root, args) => {
-      return books;
+    allBooks: () => books,
+    allAuthors: () => authors
+  },
+  Author: {
+    bookCount: (root) => {
+      return books.filter((book) => book.author === root.name).length;
     }
   }
 };
