@@ -32,7 +32,7 @@ client.query({ query }).then((response) => {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <ApolloProvider>
+    <ApolloProvider client={client}>
       <App />
     </ApolloProvider>
   </StrictMode>
