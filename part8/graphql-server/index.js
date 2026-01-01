@@ -56,7 +56,7 @@ const typeDefs = /* GraphQL */ `
       street: String!
       city: String!
     ): Person
-    eritNumber(
+    editNumber(
       name: String!
       phone String!
     ): Person
