@@ -26,7 +26,7 @@ let persons = [
   }
 ];
 
-const typeDefs = `
+const typeDefs = /*Graphql */ `
   type Address {
     street: String!
     city: String! 
