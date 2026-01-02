@@ -1,4 +1,4 @@
-﻿function Notify({ message }) {
+function Notify({ message }) {
   if (!message) return null;
 
   return <div style={{ color: 'red' }}>{message}</div>;
