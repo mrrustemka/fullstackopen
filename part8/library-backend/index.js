@@ -223,6 +223,10 @@ const typeDefs = /*Graphql */ `
     author: String!
     published: Int!
     ): Book
+    editBorn (
+    name: String!
+    born: Int!
+    ): Author
     }
 `;
 
@@ -245,6 +249,18 @@ const resolvers = {
       const book = { ...args, id: uuid() };
       books = books.concat(book);
       return book;
+    },
+    editBorn: (root, args) => {
+      const author = authors.find((a) => a.name === args.name);
+
+      if (!author) return null;
+      console.log(author);
+
+      const updatedAuthor = { ...author, born: args.born };
+      authors = authors.map((a) =>
+        a.name === args.name ? { ...a, born: args.born } : a
+      );
+      return updatedAuthor;
     }
   }
 };
