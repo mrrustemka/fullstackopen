@@ -252,6 +252,7 @@ const resolvers = {
     },
     editBorn: (root, args) => {
       const author = authors.find((a) => a.name === args.name);
+      console.log(args);
 
       if (!author) return null;
       console.log(author);

@@ -50,12 +50,14 @@ const Authors = ({ show }) => {
       </table>
       <form onSubmit={submit}>
         <div>
-          Name
-          <input
-            value={name}
-            type='text'
-            onChange={({ target }) => setName(target.value)}
-          />
+          Select a Name
+          <select value={name} onChange={(e) => setName(e.target.value)}>
+            {authors.map((a) => (
+              <option key={a.name} value={a.name} type='text'>
+                {a.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div>
           Birth Year
