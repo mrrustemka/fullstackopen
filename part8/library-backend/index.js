@@ -1,7 +1,8 @@
 ﻿const { ApolloServer } = require('@apollo/server');
 const { startStandaloneServer } = require('@apollo/server/standalone');
+const { v1: uuid } = require('uuid');
 
-const authors = [
+let authors = [
   {
     id: 'a1',
     name: 'Robert Martin',
@@ -64,7 +65,7 @@ const authors = [
   }
 ];
 
-const books = [
+let books = [
   // Robert Martin (3)
   { id: 'b1', author: 'Robert Martin', title: 'Clean Code', published: 2008 },
   {
@@ -208,12 +209,20 @@ const typeDefs = /*Graphql */ `
     id: ID!
     title: String!
     author: String!
-    published: Int
+    published: Int!
     }
 
     type Query {
     allAuthors: [Author!]
     allBooks: [Book!]
+    }
+
+    type Mutation {
+    addBook (
+    title: String!
+    author: String!
+    published: Int!
+    ): Book
     }
 `;
 
@@ -221,6 +230,22 @@ const resolvers = {
   Query: {
     allAuthors: () => authors,
     allBooks: () => books
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      if (books.find((b) => b.title === args.title)) {
+        throw new Error('Title must be unique', {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.title
+          }
+        });
+      }
+
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+      return book;
+    }
   }
 };
 
