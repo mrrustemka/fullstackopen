@@ -22,10 +22,21 @@
     id: ID!
   }
 
+  type User {
+    username: String!
+    friends: [Person!]!
+    id: ID!
+  }
+
+  type Token {
+    value: String!
+  }
+
   type Query {
     personCount: Int!
     allPersons: [Person!]!
     findPerson(name: String!): Person
+    me: User
   }
 
   type Mutation {
@@ -37,6 +48,9 @@
     ): Person
 
     editNumber(name: String!, phone: String!): Person
+
+    createUser(username: String!): User
+    login(username: String!, password: String!): Token
   }
 `;
 

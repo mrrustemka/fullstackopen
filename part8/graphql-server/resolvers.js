@@ -1,5 +1,7 @@
 ﻿const { GraphQLError } = require('graphql');
 const Person = require('./models/person');
+const jwt = require('jsonwebtoken');
+const User = require('./models/user');
 
 const resolvers = {
   Query: {
@@ -31,7 +33,20 @@ const resolvers = {
         });
       }
       const person = new Person({ ...args });
-      return person.save();
+
+      try {
+        await person.save();
+      } catch (error) {
+        throw new Error(`Saving person failed: ${error.message}`, {
+          extensions: {
+            code: 'BAD-USER-INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        });
+      }
+
+      return person;
     },
     editNumber: async (root, args) => {
       const person = await Person.findOne({ name: args.name });
@@ -41,7 +56,48 @@ const resolvers = {
       }
 
       person.phone = args.phone;
-      return person.save();
+
+      try {
+        await person.save();
+      } catch (error) {
+        throw new Error(`Saving number failed: ${error.message}`, {
+          extensions: {
+            code: 'BAD-USER-INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        });
+      }
+      return person;
+    },
+    createUser: async (root, args) => {
+      const user = new User({ username: args.username });
+
+      return user.save().catch((error) => {
+        throw new GraphQLError(`Creating the user failed: ${error.message}`, {
+          extensions: 'BAD_USER_INPUT',
+          invalidArgs: args.username,
+          error
+        });
+      });
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username });
+
+      if (!user || args.password !== 'secret') {
+        throw new GraphQLError('Wrong credentials', {
+          extensions: {
+            code: 'BAD_USER_INPUT'
+          }
+        });
+      }
+
+      const userForToken = {
+        username: user.username,
+        id: user._id
+      };
+
+      return { value: jwt.sign(userForToken, proces.env.JWT_SECRET) };
     }
   }
 };
