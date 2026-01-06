@@ -11,4 +11,4 @@ const main = async () => {
   startServer(PORT);
 };
 
-startServer(PORT);
+main();

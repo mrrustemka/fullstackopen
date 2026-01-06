@@ -9,23 +9,19 @@
   type Book {
     id: ID!
     title: String!
-    author: String!
     published: Int!
     author: Author!
   }
 
   type Query {
     allAuthors: [Author!]
-    allBooks: [Book!]
+    allBooks: [Book!]!
+    bookCount: Int!
+    findAuthor(name: String!): Author!
   }
 
   type Mutation {
-    addBook(
-      title: String!
-      author: String!
-      published: Int!
-      author: String!
-    ): Book
+    addBook(title: String!, author: String!, published: Int!): Book!
     editBorn(name: String!, born: Int!): Author
   }
 `;
