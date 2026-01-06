@@ -210,18 +210,17 @@ const resolvers = {
   },
   Mutation: {
     addBook: (root, args) => {
-      if (books.find((b) => b.title === args.title)) {
-        throw new Error('Title must be unique', {
-          extensions: {
-            code: 'BAD_USER_INPUT',
-            invalidArgs: args.title
-          }
-        });
-      }
-
-      const book = { ...args, id: uuid() };
-      books = books.concat(book);
-      return book;
+      // if (books.find((b) => b.title === args.title)) {
+      //   throw new Error('Title must be unique', {
+      //     extensions: {
+      //       code: 'BAD_USER_INPUT',
+      //       invalidArgs: args.title
+      //     }
+      //   });
+      // }
+      // const book = { ...args, id: uuid() };
+      // books = books.concat(book);
+      // return book;
     },
     editBorn: async (root, args) => {
       const author = await Author.findOne({ name: args.name });
@@ -231,7 +230,20 @@ const resolvers = {
       }
 
       author.born = args.phone;
-      return author.save();
+
+      try {
+        await author.save();
+      } catch (error) {
+        throw new GraphQLError(`Saving number failed: ${error.message}`, {
+          extensions: {
+            code: 'BAD_USER_INPUT',
+            invalidArgs: args.name,
+            error
+          }
+        });
+      }
+
+      return author;
     }
   }
 };
