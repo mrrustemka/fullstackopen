@@ -13,8 +13,14 @@ function PhoneFrom({ setError }) {
     }
   });
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
+
+    try {
+      await changeNumber({ variables: { name, phone } });
+    } catch (error) {
+      setError(error.message);
+    }
 
     changeNumber({ variables: { name, phone } });
 

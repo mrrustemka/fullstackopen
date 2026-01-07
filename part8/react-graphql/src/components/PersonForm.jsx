@@ -16,7 +16,14 @@ function PersonForm({ setError }) {
   const submit = (event) => {
     event.preventDefault();
 
-    createPerson({ variables: { name, street, city, phone } });
+    createPerson({
+      variables: {
+        name,
+        street,
+        city,
+        phone: phone.length > 0 ? phone : undefined
+      }
+    });
 
     setName('');
     setStreet('');
