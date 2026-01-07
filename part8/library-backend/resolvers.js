@@ -9,7 +9,7 @@ const resolvers = {
       return await Author.find({});
     },
     allBooks: async () => {
-      return await Book.find({});
+      return await Book.find({}).populate('author');
     },
     bookCount: async () => {
       return (await Book.find({})).length;
@@ -17,19 +17,31 @@ const resolvers = {
     findAuthor: async (root, args) => Author.findOne({ name: args.name })
   },
   Mutation: {
-    addBook: (root, args) => {
-      // if (books.find((b) => b.title === args.title)) {
-      //   throw new Error('Title must be unique', {
-      //     extensions: {
-      //       code: 'BAD_USER_INPUT',
-      //       invalidArgs: args.title
-      //     }
-      //   });
-      // }
-      // const book = { ...args, id: uuid() };
-      // books = books.concat(book);
-      // return book;
+    addBook: async (root, args) => {
+      let author = await Author.findOne({ name: args.author });
+
+      if (!author) {
+        author = new Author({
+          name: args.author,
+          books: 1
+        });
+        await author.save();
+      } else {
+        author.books += 1;
+        await author.save();
+      }
+
+      const book = new Book({
+        title: args.title,
+        published: args.published,
+        author: author._id
+      });
+
+      await book.save();
+
+      return book.populate('author');
     },
+
     editBorn: async (root, args) => {
       const author = await Author.findOne({ name: args.name });
 

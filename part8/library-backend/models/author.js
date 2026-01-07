@@ -9,7 +9,8 @@ const schema = new mongoose.Schema({
   },
   born: {
     type: Number
-  }
+  },
+  books: Number
 });
 
 module.exports = mongoose.model('Author', schema);

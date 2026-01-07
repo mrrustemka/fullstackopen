@@ -12,6 +12,16 @@ const Books = ({ show }) => {
     return null;
   }
 
+  // Add error handling
+  if (result.error) {
+    return <div>Error loading books: {result.error.message}</div>;
+  }
+
+  // Add a safety check for data
+  if (!result.data || !result.data.allBooks) {
+    return null;
+  }
+
   const books = result.data.allBooks;
 
   return (
@@ -28,7 +38,7 @@ const Books = ({ show }) => {
           {books.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td>{a.author}</td>
+              <td>{a.author.name}</td>
               <td>{a.published}</td>
             </tr>
           ))}
