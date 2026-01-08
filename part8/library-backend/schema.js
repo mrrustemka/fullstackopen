@@ -16,6 +16,7 @@
 
   type User {
     username: String!
+    favoriteGenre: String!
     id: ID!
   }
 
@@ -40,7 +41,7 @@
     ): Book!
 
     editBorn(name: String!, born: Int!): Author
-    createUser(username: String!): User
+    createUser(username: String!, favoriteGenre: String!): User
     login(username: String!, password: String!): Token
   }
 `;

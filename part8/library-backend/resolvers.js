@@ -74,17 +74,21 @@ const resolvers = {
       return author;
     },
     createUser: async (root, args) => {
-      const user = new User({ username: args.username });
+      const user = new User({
+        username: args.username,
+        favoriteGenre: args.favoriteGenre
+      });
 
-      return user.save().catch((error) => {
+      try {
+        return await user.save();
+      } catch (error) {
         throw new GraphQLError(`Creating the user failed: ${error.message}`, {
           extensions: {
             code: 'BAD_USER_INPUT',
-            invalidArgs: args.username,
-            error
+            invalidArgs: args
           }
         });
-      });
+      }
     },
     login: async (root, args) => {
       const user = await User.findOne({ username: args.username });

@@ -64,10 +64,20 @@ export const LOGIN = gql`
 `;
 
 export const CREATE_USER = gql`
-  mutation createUser($username: String!) {
-    createUser(username: $username) {
+  mutation createUser($username: String!, $favoriteGenre: String!) {
+    createUser(username: $username, favoriteGenre: $favoriteGenre) {
       username
+      favoriteGenre
       id
+    }
+  }
+`;
+
+export const ME = gql`
+  query {
+    me {
+      username
+      favoriteGenre
     }
   }
 `;
