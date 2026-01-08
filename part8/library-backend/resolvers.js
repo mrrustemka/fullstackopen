@@ -21,13 +21,7 @@ const resolvers = {
       let author = await Author.findOne({ name: args.author });
 
       if (!author) {
-        author = new Author({
-          name: args.author,
-          books: 1
-        });
-        await author.save();
-      } else {
-        author.books += 1;
+        author = new Author({ name: args.author });
         await author.save();
       }
 
@@ -43,6 +37,7 @@ const resolvers = {
     },
 
     editBorn: async (root, args) => {
+      console.log('ARGS:', args);
       const author = await Author.findOne({ name: args.name });
 
       if (!author) {

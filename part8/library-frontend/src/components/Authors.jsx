@@ -51,9 +51,10 @@ const Authors = ({ show }) => {
       <form onSubmit={submit}>
         <div>
           Select a Name
-          <select value={name} onChange={(e) => setName(e.target.value)}>
+          <select value={name} onChange={({ target }) => setName(target.value)}>
+            <option value=''>Select author</option>
             {authors.map((a) => (
-              <option key={a.name} value={a.name} type='text'>
+              <option key={a.name} value={a.name}>
                 {a.name}
               </option>
             ))}
