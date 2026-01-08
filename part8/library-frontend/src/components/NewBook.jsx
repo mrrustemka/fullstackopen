@@ -6,6 +6,7 @@ const NewBook = (props) => {
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [published, setPublished] = useState(0);
+  const [genres, setGenres] = useState('');
 
   const [createBook] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }]
@@ -18,13 +19,21 @@ const NewBook = (props) => {
   const submit = async (event) => {
     event.preventDefault();
 
-    createBook({ variables: { title, published, author } });
+    createBook({
+      variables: {
+        title,
+        published,
+        author,
+        genres: genres.split(',').map((g) => g.trim())
+      }
+    });
 
     console.log('add book...');
 
     setTitle('');
     setPublished(0);
     setAuthor('');
+    setGenres('');
   };
 
   return (
@@ -52,16 +61,14 @@ const NewBook = (props) => {
             onChange={({ target }) => setPublished(Number(target.value))}
           />
         </div>
-        {/* <div>
+        <div>
+          genres
           <input
-            value={genre}
-            onChange={({ target }) => setGenre(target.value)}
+            placeholder='fantasy, drama, classic'
+            value={genres}
+            onChange={({ target }) => setGenres(target.value)}
           />
-          <button onClick={addGenre} type='button'>
-            add genre
-          </button>
         </div>
-        <div>genres: {genres.join(' ')}</div> */}
         <button type='submit'>Create Book</button>
       </form>
     </div>

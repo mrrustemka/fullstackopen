@@ -8,8 +8,20 @@ const resolvers = {
     allAuthors: async () => {
       return await Author.find({});
     },
-    allBooks: async () => {
-      return await Book.find({}).populate('author');
+    allBooks: async (root, args) => {
+      const filter = {};
+
+      if (args.author) {
+        const author = await Author.findOne({ name: args.author });
+        if (!author) return [];
+        filter.author = author._id;
+      }
+
+      if (args.genre) {
+        filter.genres = { $in: [args.genre] };
+      }
+
+      return Book.find(filter).populate('author');
     },
     bookCount: async () => {
       return (await Book.find({})).length;
@@ -28,7 +40,8 @@ const resolvers = {
       const book = new Book({
         title: args.title,
         published: args.published,
-        author: author._id
+        author: author._id,
+        genres: args.genres
       });
 
       await book.save();

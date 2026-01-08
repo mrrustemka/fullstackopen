@@ -7,10 +7,11 @@
   }
 
   type Book {
-    id: ID!
     title: String!
-    published: Int!
     author: Author!
+    published: Int!
+    genres: [String!]!
+    id: ID!
   }
 
   type User {
@@ -24,14 +25,20 @@
 
   type Query {
     allAuthors: [Author!]
-    allBooks: [Book!]!
+    allBooks(author: String, genre: String): [Book!]!
     bookCount: Int!
     findAuthor(name: String!): Author!
     me: User
   }
 
   type Mutation {
-    addBook(title: String!, author: String!, published: Int!): Book!
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String!]!
+    ): Book!
+
     editBorn(name: String!, born: Int!): Author
     createUser(username: String!): User
     login(username: String!, password: String!): Token

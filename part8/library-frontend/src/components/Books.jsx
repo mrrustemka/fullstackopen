@@ -1,28 +1,24 @@
-import { ALL_BOOKS } from '../queries';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client/react';
+import { ALL_BOOKS } from '../queries';
 
 const Books = ({ show }) => {
-  const result = useQuery(ALL_BOOKS);
+  const [genre, setGenre] = useState(null);
 
-  if (!show) {
-    return null;
-  }
+  const result = useQuery(ALL_BOOKS, {
+    variables: { genre }
+  });
 
-  if (result.loading) {
-    return null;
-  }
-
-  // Add error handling
+  if (!show) return null;
+  if (result.loading) return null;
   if (result.error) {
     return <div>Error loading books: {result.error.message}</div>;
   }
 
-  // Add a safety check for data
-  if (!result.data || !result.data.allBooks) {
-    return null;
-  }
-
   const books = result.data.allBooks;
+
+  // Collect unique genres
+  const genres = [...new Set(books.flatMap((b) => b.genres))];
 
   return (
     <div>
@@ -35,15 +31,33 @@ const Books = ({ show }) => {
             <th>Author</th>
             <th>Published</th>
           </tr>
-          {books.map((a) => (
-            <tr key={a.title}>
-              <td>{a.title}</td>
-              <td>{a.author.name}</td>
-              <td>{a.published}</td>
+
+          {books.map((b) => (
+            <tr key={b.title}>
+              <td>{b.title}</td>
+              <td>{b.author.name}</td>
+              <td>{b.published}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      <div style={{ marginTop: '1rem' }}>
+        {genres.map((g) => (
+          <button
+            key={g}
+            onClick={() => setGenre(g)}
+            style={{
+              marginRight: 5,
+              fontWeight: genre === g ? 'bold' : 'normal'
+            }}
+          >
+            {g}
+          </button>
+        ))}
+
+        <button onClick={() => setGenre(null)}>all genres</button>
+      </div>
     </div>
   );
 };
