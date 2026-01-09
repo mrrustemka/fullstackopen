@@ -40,7 +40,7 @@ function LoginForm({ setError, setToken }) {
             type='password'
           />
         </div>
-        <button type='submit'>Create</button>
+        <button type='submit'>Login</button>
       </form>
     </>
   );
