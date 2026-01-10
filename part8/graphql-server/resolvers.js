@@ -10,8 +10,11 @@ const resolvers = {
   Query: {
     personCount: () => Person.collection.countDocuments(),
     allPersons: async (root, args) => {
-      if (!args.phone) return Person.find({});
-      return Person.find({ phone: { $exists: args.phone === 'YES' } });
+      console.log('Person.find');
+      if (!args.phone) return Person.find({}).populate('friendOf');
+      return Person.find({ phone: { $exists: args.phone === 'YES' } }).populate(
+        'friendOf'
+      );
     },
     findPerson: async (root, args) => Person.findOne({ name: args.name })
   },
@@ -21,6 +24,16 @@ const resolvers = {
         street,
         city
       };
+    },
+    friendOf: async (root) => {
+      console.log('User.find');
+      const friends = await User.find({
+        friends: {
+          $in: [root._id]
+        }
+      });
+
+      return friends;
     }
   },
   Mutation: {

@@ -19,6 +19,7 @@
     name: String!
     phone: String
     address: Address!
+    frinedOf: [User!]!
     id: ID!
   }
 
