@@ -32,6 +32,10 @@
     value: String!
   }
 
+  type Subscription {
+    personAdded: Person!
+  }
+
   type Query {
     personCount: Int!
     allPersons: [Person!]!

@@ -1,11 +1,10 @@
 ﻿const { ApolloServer } = require('@apollo/server');
-const { startStandaloneServer } = require('@apollo/server/standalone');
 const {
   ApolloServerPluginDrainHttpServer
 } = require('@apollo/server/plugin/drainHttpServer');
-const { expressMiddleware } = reqire('@as-integrations/express5');
+const { expressMiddleware } = require('@as-integrations/express5');
 const cors = require('cors');
-const express = reqire('express');
+const express = require('express');
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 const http = require('http');
 const jwt = require('jsonwebtoken');
@@ -13,6 +12,9 @@ const jwt = require('jsonwebtoken');
 const typeDefs = require('./schema');
 const resolvers = require('./resolvers');
 const User = require('./models/user');
+
+const { WebSocketServer } = require('ws');
+const { useServer } = require('graphql-ws/use/ws');
 
 const getUserFromAuthHeader = async (auth) => {
   if (!auth || !auth.startsWith('Bearer ')) {
@@ -27,9 +29,28 @@ const startServer = async (port) => {
   const app = express();
   const httpServer = http.createServer(app);
 
+  const wsServer = new WebSocketServer({
+    server: httpServer,
+    path: '/'
+  });
+
+  const schema = makeExecutableSchema({ typeDefs, resolvers });
+  const serverCleanup = useServer({ schema }, wsServer);
+
   const server = new ApolloServer({
-    schema: makeExecutableSchema({ typeDefs, resolvers }),
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+    schema,
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            }
+          };
+        }
+      }
+    ]
   });
 
   await server.start();
