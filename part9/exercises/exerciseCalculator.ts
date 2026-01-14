@@ -36,7 +36,12 @@ function getRatingDescription(rating: number): string {
 }
 
 try {
-  console.log(getCalculations([3, 0, 2, 4.5, 0, 3, 1], 2));
+  console.log(
+    getCalculations(
+      process.argv.slice(3).map((n) => Number(n)),
+      Number(process.argv[2])
+    )
+  );
 } catch (error) {
   throw new Error(error.message);
 }

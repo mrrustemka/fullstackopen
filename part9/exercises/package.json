@@ -10,5 +10,8 @@
   },
   "author": "Rust M",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^25.0.8"
+  }
 }
