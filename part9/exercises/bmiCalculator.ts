@@ -1,9 +1,9 @@
-﻿interface Data {
-  height: number;
-  weight: number;
-}
+﻿// interface Data {
+//   height: number;
+//   weight: number;
+// }
 
-function getBmi(height: number, weight: number): string {
+export function getBmi(height: number, weight: number): string {
   const result = (weight / height ** 2) * 10000;
 
   if (result < 16) {
@@ -26,7 +26,7 @@ function getBmi(height: number, weight: number): string {
 }
 
 try {
-  console.log(getBmi(Number(process.argv[2]), Number(process.argv[3])));
+  // console.log(getBmi(Number(process.argv[2]), Number(process.argv[3])));
 } catch (e) {
   throw new Error(e.message);
 }
