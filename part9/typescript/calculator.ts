@@ -1,6 +1,10 @@
 type Operation = 'multiply' | 'add' | 'divide';
 
-const calculator = (a: number, b: number, printText: Operation): number => {
+export const calculator = (
+  a: number,
+  b: number,
+  printText: Operation
+): number => {
   switch (printText) {
     case 'multiply':
       return a * b;
