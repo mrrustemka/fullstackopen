@@ -8,7 +8,7 @@
   average: number;
 }
 
-function getCalculations(hours: number[], target: number): Result {
+export function getCalculations(hours: number[], target: number): Result {
   const average =
     hours.reduce((acc, cur) => {
       return acc + cur;

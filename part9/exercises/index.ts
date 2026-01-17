@@ -1,7 +1,13 @@
 ﻿const express = require('express');
 const app = express();
-// import bmi = require('./bmiCalculator');
+app.use(express.json());
 import { getBmi } from './bmiCalculator';
+import { getCalculations } from './exerciseCalculator';
+
+interface ExerciseBody {
+  daily_exercises: number[];
+  target: number;
+}
 const qs = require('qs');
 app.set('query parser', (str: any) =>
   console.log(
@@ -40,6 +46,27 @@ app.get('/bmi', (_req: any, res: any) => {
     height: height,
     bmi: getBmi(height, weight)
   });
+});
+
+app.post('/exercises', (_req: any, res: any) => {
+  try {
+    const body = _req.body as ExerciseBody;
+    const { daily_exercises, target } = body;
+
+    if (!Array.isArray(daily_exercises) || typeof target !== 'number') {
+      throw new Error('malformatted parameters');
+    }
+
+    res.send(getCalculations(daily_exercises, target));
+  } catch (error) {
+    let message = 'Something went wrong';
+
+    if (error instanceof Error) {
+      message = 'parameters missing';
+    }
+
+    res.status(400).json({ error: message });
+  }
 });
 
 const PORT = 3001;

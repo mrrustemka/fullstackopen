@@ -1,9 +1,4 @@
-﻿// interface Data {
-//   height: number;
-//   weight: number;
-// }
-
-export function getBmi(height: number, weight: number): string {
+﻿export function getBmi(height: number, weight: number): string {
   const result = (weight / height ** 2) * 10000;
 
   if (result < 16) {
