@@ -1,4 +1,4 @@
-﻿import { DiadyEntry } from '../src/types';
+﻿import { DiaryEntry } from '../src/types';
 
 const diaryEntries: DiaryEntry[] = [
   {
@@ -30,3 +30,5 @@ const diaryEntries: DiaryEntry[] = [
     comment: 'I almost failed the landing but I survived'
   }
 ];
+
+export default diaryEntries;
