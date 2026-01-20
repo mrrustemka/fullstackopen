@@ -21,4 +21,16 @@ router.get('/:id', (_req, res) => {
   }
 });
 
+router.post('/', (_req, res) => {
+  /* eslint-disable @typescript-eslint/no-unsafe-assignment */
+  const { date, weather, visibility, comment } = _req.body;
+  const addedEntry = diaryService.addDiary({
+    date,
+    weather,
+    visibility,
+    comment
+  });
+  res.json(addedEntry);
+});
+
 export default router;
