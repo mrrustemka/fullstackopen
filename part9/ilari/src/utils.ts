@@ -1,15 +1,22 @@
 ﻿import { newDiaryEntry, Visibility, Weather } from './types';
 
 export const toNewDiaryEntry = (object: unknown): newDiaryEntry => {
-  console.log(object);
-  const newEntry: newDiaryEntry = {
-    date: '',
-    weather: 'cloudy',
-    visibility: 'great',
-    comment: ''
-  };
+  if ( !object || typeof object !== 'object' ) {
+    throw new Error('Incorrect or missing data');
+  }
 
-  return newEntry;
+  if ('comment' in object && 'date' in object && 'weather' in object && 'visibility' in object)  {
+    const newEntry: newDiaryEntry = {
+      weather: parseWeather(object.weather),
+      visibility: parseVisibility(object.visibility),
+      date: parseDate(object.date),
+      comment: parseComment(object.comment)
+    };
+
+    return newEntry;
+  }
+
+  throw new Error('Incorrect data: some fields are missing');
 };
 
 const parseComment = (comment: unknown): string => {
@@ -17,7 +24,7 @@ const parseComment = (comment: unknown): string => {
     throw new Error('Incorrect or missing comment');
   }
 
-  return comment;
+  return String(comment);
 };
 
 const parseDate = (date: unknown): string {
@@ -25,7 +32,7 @@ const parseDate = (date: unknown): string {
         throw new Error('Incorrect or missing date' + date);
     }
 
-    return date;
+    return String(date);
 }
 
 const parseWeather = (weather: unknown): Weather => {
@@ -36,8 +43,9 @@ const parseWeather = (weather: unknown): Weather => {
 };
 
 const parseVisibility = (visibility: unknown): Visibility => {
-  if (!visibility || !isString(visibility) || !isVisibility(visibility)) {
-      throw new Error('Incorrect or missing weather: ' + visibility);
+  // check !visibility removed:
+  if (!isString(visibility) || !isVisibility(visibility)) {
+      throw new Error('Incorrect visibility: ' + visibility);
   }
   return visibility;
 };
@@ -50,10 +58,10 @@ const isDate = (date: string): boolean => {
     return Boolean(Date.parse(date)); 
 }
 
-const isWeather = (str: string): str is Weather => {
-  return ['sunny', 'rainy', 'cloudy', 'stormy'].includes(str);
+const isWeather = (param: string): param is Weather => {
+  return Object.values(Weather).map(v => v.toString()).includes(param);
 };
 
 const isVisibility = (str: string): str is Visibility => {
-  return ['great' , 'good' , 'ok' , 'poor'].includes(str);
+  return Object.values(Visibility).map(v => v.toString()).includes(str);
 };
