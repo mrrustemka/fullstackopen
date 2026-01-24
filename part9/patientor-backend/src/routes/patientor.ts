@@ -8,9 +8,9 @@ router.get('/', (_req, res) => {
   res.json(patientorService.getNonSensitivePatients());
 });
 
-router.post('/', (_req, res) => {
+router.post('/', (req, res) => {
   try {
-    const newPatient = toNewPatient(_req.body);
+    const newPatient = toNewPatient(req.body);
     const addedPatient = patientorService.addPatient(newPatient);
     res.json(addedPatient);
   } catch (error: unknown) {

@@ -2,9 +2,9 @@
 Content-Type: application/json
 
 {
-  "name": "John Doe",
-  "ssn": "123-45-6789",
-  "dateOfBirth": "1990-01-01",
-  "gender": "male",
-  "occupation": "Developer"
+  "name": "Alex Man",
+  "ssn": "135-45-6789",
+  "dateOfBirth": "1980-01-01",
+  "gender": "female",
+  "occupation": "Fireman"
 }
