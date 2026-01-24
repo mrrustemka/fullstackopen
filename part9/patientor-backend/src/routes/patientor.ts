@@ -1,12 +1,9 @@
 ﻿import express from 'express';
 import patientorService from '../service/patientorService';
 import { toNewPatient } from '../utils';
+import { ZodError } from 'zod';
 
 const router = express.Router();
-
-router.get('/', (_req, res) => {
-  res.json(patientorService.getNonSensitivePatients());
-});
 
 router.post('/', (req, res) => {
   try {
@@ -14,11 +11,22 @@ router.post('/', (req, res) => {
     const addedPatient = patientorService.addPatient(newPatient);
     res.json(addedPatient);
   } catch (error: unknown) {
-    let errorMessage = 'Something went wrong.';
-    if (error instanceof Error) {
-      errorMessage += ' ' + error.message;
+    if (error instanceof ZodError) {
+      res.status(400).json({
+        error: error.issues.map((issue) => ({
+          path: issue.path,
+          message: issue.message
+        }))
+      });
+      return;
     }
-    res.status(400).send(errorMessage);
+
+    if (error instanceof Error) {
+      res.status(400).json({ error: error.message });
+      return;
+    }
+
+    res.status(400).json({ error: 'Unknown error' });
   }
 });
 

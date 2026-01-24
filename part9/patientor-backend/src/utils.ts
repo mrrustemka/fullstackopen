@@ -1,52 +1,18 @@
-﻿import { CreatePatient, Gender } from './types';
+﻿import { z } from 'zod';
+import { CreatePatient, Gender } from './types';
 
-//TYPE PREDICATES
+// SCHEMA
 
-const isString = (value: unknown): value is string => {
-  return typeof value === 'string' || value instanceof String;
-};
+export const newPatientSchema = z.object({
+  name: z.string().min(1),
+  ssn: z.string().min(1),
+  dateOfBirth: z.string().min(1),
+  occupation: z.string().min(1),
+  gender: z.nativeEnum(Gender)
+});
 
-const isGender = (value: unknown): value is Gender => {
-  return Object.values(Gender).includes(value as Gender);
-};
-
-// PARSERS
-const parseString = (value: unknown, field: string): string => {
-  if (!isString(value)) {
-    throw new Error(`Invalid or missing ${field}`);
-  }
-  return value;
-};
-
-const parseGender = (value: unknown): Gender => {
-  if (!isGender(value)) {
-    throw new Error('Invalid or missing gender');
-  }
-  return value;
-};
-
-//MAIN CONVERTER
+// TYPE-SAFE PARSER
 
 export const toNewPatient = (object: unknown): CreatePatient => {
-  if (!object || typeof object !== 'object') {
-    throw new Error('Invalid or missing patient data');
-  }
-
-  if (
-    'name' in object &&
-    'ssn' in object &&
-    'dateOfBirth' in object &&
-    'gender' in object &&
-    'occupation' in object
-  ) {
-    return {
-      name: parseString(object.name, 'name'),
-      ssn: parseString(object.ssn, 'ssn'),
-      dateOfBirth: parseString(object.dateOfBirth, 'dateOfBirth'),
-      gender: parseGender(object.gender),
-      occupation: parseString(object.occupation, 'occupation')
-    };
-  }
-
-  throw new Error('Missing required patient fields');
+  return newPatientSchema.parse(object);
 };

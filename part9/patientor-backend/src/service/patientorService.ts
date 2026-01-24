@@ -1,4 +1,6 @@
 ﻿import patients from '../data/patients';
+import diagnoses from '../data/diagnoses';
+
 import { CreatePatient, Patient } from '../types';
 import { v1 as uuid } from 'uuid';
 
@@ -22,7 +24,12 @@ const addPatient = (entry: CreatePatient): Patient => {
   return newPatient;
 };
 
+const getDiagnoses = () => {
+  return diagnoses;
+};
+
 export default {
   getNonSensitivePatients,
-  addPatient
+  addPatient,
+  getDiagnoses
 };
