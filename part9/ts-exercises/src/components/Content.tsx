@@ -25,9 +25,23 @@ function Content(props: CoursePart) {
   return (
     <>
       {props.courses.map((c) => (
-        <p key={c.name}>
-          {c.name} {c.exerciseCount}
-        </p>
+        <div key={c.name}>
+          <div>{'Name: ' + c.name}</div>
+          <div>
+            <h4>{'Exercise Count: ' + c.exerciseCount}</h4>
+          </div>
+          <div>{'Description: ' + c.description}</div>
+          {c.groupProjectCount ? (
+            <div>{'Group: ' + c.groupProjectCount}</div>
+          ) : (
+            <></>
+          )}
+          {c.backgroundMaterial ? (
+            <div>{'Link: ' + c.backgroundMaterial}</div>
+          ) : (
+            <></>
+          )}
+        </div>
       ))}
     </>
   );
