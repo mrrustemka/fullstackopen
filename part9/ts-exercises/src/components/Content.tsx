@@ -1,27 +1,6 @@
-﻿interface CoursePartBase {
-  name: string;
-  exerciseCount: number;
-}
+﻿import type { CoursePart } from '../types';
 
-interface CoursePartBasic extends CoursePartBase {
-  description: string;
-  kind: 'basic';
-}
-
-interface CoursePartGroup extends CoursePartBase {
-  groupProjectCount: number;
-  kind: 'group';
-}
-
-interface CoursePartBackground extends CoursePartBase {
-  description: string;
-  backgroundMaterial: string;
-  kind: 'background';
-}
-
-type CoursePart = CoursePartBasic | CoursePartGroup | CoursePartBackground;
-
-function Content(props: CoursePart) {
+function Content(props: { courses: CoursePart[] }) {
   return (
     <>
       {props.courses.map((c) => (
@@ -30,7 +9,44 @@ function Content(props: CoursePart) {
           <div>
             <h4>{'Exercise Count: ' + c.exerciseCount}</h4>
           </div>
-          <div>{'Description: ' + c.description}</div>
+          {(() => {
+            switch (c.kind) {
+              case 'basic':
+                return <>{'Description: ' + c.description}</>;
+
+              case 'group':
+                return <>{'Group: ' + c.groupProjectCount}</>;
+
+              case 'background':
+                return (
+                  <>
+                    <div>{'Description: ' + c.description}</div>
+                    <div>{'Links: ' + c.backgroundMaterial}</div>
+                  </>
+                );
+
+              case 'special':
+                return (
+                  <>
+                    <div>{'Description: ' + c.description}</div>
+                    <div>{'Requirments: ' + c.requirements.join(', ')}</div>
+                  </>
+                );
+
+              default:
+                return null;
+            }
+          })()}
+        </div>
+      ))}
+    </>
+  );
+}
+
+export default Content;
+
+{
+  /* 
           {c.groupProjectCount ? (
             <div>{'Group: ' + c.groupProjectCount}</div>
           ) : (
@@ -40,11 +56,5 @@ function Content(props: CoursePart) {
             <div>{'Link: ' + c.backgroundMaterial}</div>
           ) : (
             <></>
-          )}
-        </div>
-      ))}
-    </>
-  );
+          )} */
 }
-
-export default Content;
